@@ -1,0 +1,42 @@
+.success{
+    color: #1bb15c;
+    background-color: #cbffd3;
+}
+.fail{
+    color: #ff6e6e;
+    background-color: #ffcccc;
+}
+.pop-up{
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.2s all;
+    z-index: 1000000;
+}
+.active{
+    opacity: 1;
+    visibility: visible;
+    border-radius: 5px;
+    top: -25%;
+}
+.success .pop-up-btn{
+    color: #1bb15c;
+}
+.fail .pop-up-btn{
+    color: #ff6e6e;
+}
+.inactive{
+    opacity: 0;
+    top: -10%;
+    visibility: hidden;
+}
+.pop-up-btn{
+    background: none;
+    border: none;
+    outline: none !important;
+    float: initial;
+    font-size: 25px;
+}

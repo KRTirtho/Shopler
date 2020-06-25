@@ -14,6 +14,6 @@ const fileFilter = (req, file, cb)=>{
     cb(new Error("Only Images allowed"), false)
 }
 
-const uploadUserImage = multer({storage, /* limits: {fileSize: 2097152}, */ })
+const uploadUserImage = multer({storage, limits: {fileSize: 2097152}, })
 
 module.exports = uploadUserImage

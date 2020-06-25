@@ -1,0 +1,118 @@
+:root{
+  --speed: 300ms;
+  --bg: #333;
+  --border: none;
+  --border-radius: 5px;
+}
+
+.dropdown-skeleton{
+  position: absolute;
+  user-select: none !important;
+}
+
+/* Toggle button */
+.dropdown-btn{
+  height: 30px;
+  width: 30px;
+  background-color: aliceblue;
+  border-radius: 50%;
+  position: relative;
+  user-select: none;
+  transition: 0.2s all ease;
+}
+.dropdown-caret{
+  position: absolute;
+  top: 20%;
+  user-select: none;
+  left: 35%;
+  transition: 0.3s all cubic-bezier(0.23, 1, 0.320, 1);
+  transform: rotate(0deg);
+}
+.dropdown-caret-active{
+  transform: rotate(180deg);
+}
+.dropdown-btn:hover{
+  filter: brightness(0.8);
+}
+.dropdown-btn:active{
+  filter: brightness(0.95);
+  transform: scale(0.95);
+}
+
+/* Menu itself */
+.main-wrapper {
+  position: absolute;
+  top: 100%;
+  background-color: var(--bg);
+  width: 12rem;
+  left: 50%;
+  transform: translateX(-80%);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  transition: all var(--speed) ease;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.menu-skeleton {
+  width: 100%;
+}
+.item {
+  color: white;
+  background: #444;
+  margin: 5px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius);
+  transition: all var(--speed);
+  padding: 0 10px;
+}
+.go-back span{
+  margin-right: 5px;
+}
+.item button {
+  background: none;
+  border: none;
+  outline: none !important;
+  color: white;
+}
+.item span[role="img"] {
+  font-size: 30px;
+  color: white;
+}
+.item span img{
+  margin-bottom: 5px;
+}
+.item .right {
+  margin-left: auto;
+}
+
+/* CSSTransition classes  */
+.first-menu-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+.first-menu-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+.first-menu-exit {
+  position: absolute;
+}
+.first-menu-exit-active {
+  transform: translateX(-110%);
+  transition: all var(--speed) ease;
+}
+
+
+.second-menu-enter {
+  transform: translateX(110%);
+}
+.second-menu-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+.second-menu-exit-active {
+  transform: translateX(110%);
+  transition: all var(--speed) ease;
+}

@@ -1,0 +1,28 @@
+p{
+    overflow-wrap: break-word !important;
+}
+
+.main-container{
+    width: 97%;
+    margin-top: 15px;
+}
+.img-container{
+    width: 55% !important;
+    padding: 10px;
+    height: 550px;
+}
+.text-container{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    margin-left: 20px;
+    align-items: center;
+}
+
+.text-container h2{
+    margin-top: 20px;
+}
+
+.text-container h5{
+    margin-top: 30px;
+}

@@ -41,14 +41,14 @@ exports.getProductByUserId = async (req, res) => {
       })
         .sort(
           sort && sort === "a-z"
-            ? { title: "desc" }
-            : sort === "z-a"
             ? { title: "asc" }
+            : sort === "z-a"
+            ? { title: "desc" }
             : sort === 1
             ? { date: 1 }
             : sort === -1
             ? { date: -1 }
-            : { date: -1 }
+            : { date: "desc" }
         )
         .exec((err, products) => {
           if (err) res.status(500).json({ Error: "Failed to find products" });

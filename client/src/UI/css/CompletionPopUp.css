@@ -1,0 +1,56 @@
+.pop-up-skeleton{
+    display: flex;
+    align-items: center;
+    background-color: #ececec;
+    padding: 15px;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px 0 #bebebe;
+}
+.pop-up-skeleton button{
+    background: none;
+    border: none;
+    outline: none !important;
+    padding: 5px;
+}
+.color-success{
+    color: #3dd381;
+}
+.color-fail{
+    color: #ff6464;
+}
+.fade-y-enter{
+    opacity: 0;
+    bottom: -100%;
+}
+
+.fade-y-enter-active{
+    opacity: 1;
+    bottom: 0;
+    transition: 0.25s all ease;
+}
+
+.fade-y-exit{
+    opacity: 1;
+    bottom: 0;
+    transition: 0.25s all ease;
+}
+
+.fade-y-exit-active{
+    bottom: -100%;
+    opacity: 0;
+}
+
+.text-wrapper h6{
+    display: inline-block;
+}
+
+.text-wrapper button{
+    margin-left: 10px;
+    display: inline-block;
+    transform: scale(1.5);
+}

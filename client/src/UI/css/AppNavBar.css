@@ -1,0 +1,15 @@
+.search-bar{
+    padding: 5px !important;
+    border-radius: 5px;
+    outline: none;
+    border: none !important;
+    border-radius: 5px 0 0 5px !important;
+}
+
+.search-btn{
+    padding: 5px 10px !important;
+    border: none;
+    outline: none !important;
+    border-radius: 0 5px 5px 0;
+}
+

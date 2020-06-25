@@ -1,0 +1,137 @@
+.product-fade-enter{
+    opacity: 0;    
+}
+
+.product-fade-enter-active{
+    opacity: 1;
+    transition: opacity 100ms ease;
+}
+
+.product-fade-exit{
+    opacity: 1;
+    transition: opacity 100ms ease;
+}
+
+.product-fade-exit-active{
+    opacity: 0;
+}
+
+.product-container{
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.product-container div{
+    display: flex;
+    align-items: center;
+}
+
+.product-container p{
+    margin: 5px 10px !important;
+    font-size: 12px;
+}
+
+
+.upload-container{
+    background: #eeeeee;
+    height: 95vh;
+    width: 28.453%;
+}
+.upload-container h3{
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+.product-wrapper{
+    overflow-y: scroll;
+}
+.sort-menu{
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+.user-info-container{
+    width: 40.4%;
+    height: 95vh;
+    background-color: #f8f8f8;
+}
+
+.user-info-container .welcome-text{
+    background-color: white;
+    padding: 10px 0;
+}
+
+.user-info-container .welcome-text span{
+    color: #0e76ff;
+}
+
+.user-profile-image{
+    width: 190px;
+    height: 193px;
+    border: 1px solid #555;
+
+}
+
+.user-info-edit-btn , .user-info-edit-img-btn{
+    border: 1px solid #555;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #dbdbdb;
+    outline: none !important;
+    transition: 0.2s all ease-in-out;
+}
+
+.user-info-edit-img-btn{
+    border-radius: 0 0 10px 0;
+    border-top: none;
+    padding: 5px 7px;
+    bottom: -4%;
+}
+
+.user-info-edit-btn:hover,
+.user-info-edit-img-btn:hover{
+    filter: brightness(0.85);
+}
+.user-info-edit-btn:active,
+.user-info-edit-img-btn:active{
+    filter: brightness(0.98);
+    transform: scale(0.95);
+}
+
+.user-info-input{
+    padding: 3px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    outline: none;
+}
+
+#businessEmail, #email{
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+.attention-tag{
+    position: absolute;
+    bottom: -100%;
+    left: 15%;
+    font-size: 12px;
+}
+
+/*% Product Edit Section */
+.product-top-container{
+    color: #707070;
+}
+.product-header{
+    color: #3686FF !important;
+}
+
+
+
+
+
+
+
+
+
