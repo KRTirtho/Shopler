@@ -1,18 +1,14 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Link, useRouteMatch, Redirect } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProducts } from "../../../Features/actions/productActions";
 import UserProductLoader from "../../../Loaders/UserProductLoader";
 import "./css/ProfilePage.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import library from "../../../fontawesome";
 import UserInfo from "./UserInfo";
 import useFetchGet from "../../../Hooks/useFetchGet";
-import useFetchP3D from "../../../Hooks/useFetchP3D";
 import {DropDownMenu, Option, Divider} from "../../../UI/DropDownMenu";
 
 const ProfilePage = React.memo(({ userDataState }) => {
-  const sortRef = useRef();
   const [sort, setSort] = useState("");
   const { loggedIn, userData } = userDataState;
 
@@ -28,12 +24,10 @@ const ProfilePage = React.memo(({ userDataState }) => {
   const [get, products, loading, error] = useFetchGet();
 
 
-
   useEffect(() => {
     if(loggedIn)get(url)
+    // eslint-disable-next-line
   }, [loggedIn, url, sort]);
-
-  console.log("RENDER")
 
   const handleSort = (sortVal) => {
       if (loggedIn) {
@@ -99,6 +93,7 @@ const ProfilePage = React.memo(({ userDataState }) => {
         </div>
         {products.length === 0 ||
           (products.Message && (
+            // eslint-disable-next-line
             <div>
               You haven't uploaded any product yet 😢{" "}
               <Link to="/upload">Upload now</Link> 😀

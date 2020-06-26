@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux"
 import uuid from "uuid"
-import { BodyDiv } from "./Body"
+import BodyDiv from "../UI/ProductCard"
 import ProductLoader from '../Loaders/ProductLoader'
 
 function QueryItem({productState, queryProduct}) {

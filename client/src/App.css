@@ -4,11 +4,11 @@
 .fade-appear-active,
 .fade-enter-active{
     opacity: 1;
-    transition: opacity 50ms;
+    transition: opacity 50ms ease;
 }
 .fade-exit{
     opacity: 1;
-    transition: opacity 50ms;
+    transition: opacity 50ms ease;
 }
 .fade-exit-active{
     opacity: 0;

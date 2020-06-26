@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// eslint-disable-next-line
 import fontawesome from "../fontawesome";
 import "./css/DropDownMenu.css";
 import { CSSTransition } from "react-transition-group";

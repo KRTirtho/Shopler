@@ -1,14 +1,14 @@
-import React, { useState, useRef, memo, useEffect } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { connect } from "react-redux";
 import useFetchP3D from "../../../Hooks/useFetchP3D";
 import useFetchGet from "../../../Hooks/useFetchGet";
+// eslint-disable-next-line
 import fontawesome from "../../../fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouteMatch } from "react-router-dom";
 import CompletionPopUp from "../../../UI/CompletionPopUp";
 
 const ProductEdit = memo(({ userDataState, match }) => {
-  const imgRef = useRef();
   const [popUpActive, setPopUpActive] = useState(false);
   const [inputState, setInputState] = useState({
     title: "",
@@ -21,9 +21,8 @@ const ProductEdit = memo(({ userDataState, match }) => {
   const [isEditing, setIsEditing] = useState(false);
   const { params } = useRouteMatch();
   const { userData, loggedIn } = userDataState;
-  const [request, data, success, submitError, PopUp] = useFetchP3D({
-    usePopUp: false,
-  });
+  //* Special type of value skipping in JS ES7
+  const [request, , success, submitError] = useFetchP3D();
 
   const [get, product] = useFetchGet();
 
@@ -99,6 +98,7 @@ const ProductEdit = memo(({ userDataState, match }) => {
     return () => {
       controller.abort();
     };
+    // eslint-disable-next-line
   }, [isImgEditing, isEditing, loggedIn, popUpActive]);
 
   return (
@@ -118,6 +118,7 @@ const ProductEdit = memo(({ userDataState, match }) => {
           <h3>
             Edit {product && product.title ? product.title : "Product"}'s info
           </h3>
+          {/* eslint-disable-next-line */}
           <a
             className="xs-margin-left xs-margin-top"
             onClick={(e) => toggleEditMode(true)}>
@@ -180,7 +181,7 @@ const ProductEdit = memo(({ userDataState, match }) => {
                 className="user-info-input xs-margin-left tiny-margin-bottom"
               />
             </div>
-            <div className="display-flex">
+            <div className="display-flex width-full">
               {" "}
               {/* Description */}
               <label htmlFor="description">Description: </label>
@@ -203,7 +204,7 @@ const ProductEdit = memo(({ userDataState, match }) => {
                     : ""
                 }
                 disabled={!isEditing}
-                className="xs-margin-left border-black tiny-margin-bottom"
+                className="input-custom xs-margin-left border-black tiny-margin-bottom"
               />
             </div>
           </div>

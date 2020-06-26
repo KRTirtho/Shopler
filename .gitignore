@@ -5,3 +5,5 @@
 /client/.vscode
 
 /FileStorage
+
+/.env

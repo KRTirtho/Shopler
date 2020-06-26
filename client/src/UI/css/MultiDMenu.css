@@ -1,6 +1,13 @@
 :root{
   --speed: 300ms;
+  --dropdown-btn-bg: #353535;
+  --dropdown-btn-bg-light: aliceblue;
   --bg: #333;
+  --item-bg: #444;
+  --item-bg-light: #ffffff;
+  --bg-light: #eee;
+  --text-color: white;
+  --text-color-light: #333;
   --border: none;
   --border-radius: 5px;
 }
@@ -14,7 +21,7 @@
 .dropdown-btn{
   height: 30px;
   width: 30px;
-  background-color: aliceblue;
+  background-color: var(--dropdown-btn-bg-light);
   border-radius: 50%;
   position: relative;
   user-select: none;
@@ -39,27 +46,42 @@
   transform: scale(0.95);
 }
 
+/* Dark */
+
+.dropdown-btn[data-mode="dark"]{
+  background-color: var(--dropdown-btn-bg);
+}
+.dropdown-caret[data-mode="dark"]{
+  color: #fff;
+}
+
 /* Menu itself */
 .main-wrapper {
   position: absolute;
   top: 100%;
-  background-color: var(--bg);
-  width: 12rem;
+  background-color: var(--bg-light);
+  width: 18rem;
   left: 50%;
   transform: translateX(-80%);
   border: var(--border);
   border-radius: var(--border-radius);
   transition: all var(--speed) ease;
+  box-shadow: 0 5px 10px #888;
   z-index: 10;
   overflow: hidden;
+}
+
+/* Dark */
+.main-wrapper[data-mode="dark"]{
+  background-color: var(--bg);
 }
 
 .menu-skeleton {
   width: 100%;
 }
 .item {
-  color: white;
-  background: #444;
+  color: var(--text-color-light);
+  background: var(--item-bg-light);
   margin: 5px 10px;
   display: flex;
   align-items: center;
@@ -67,6 +89,11 @@
   transition: all var(--speed);
   padding: 0 10px;
 }
+.item[data-mode="dark"]{
+  color: var(--text-color);
+  background-color: var(--item-bg);
+}
+
 .go-back span{
   margin-right: 5px;
 }
@@ -74,17 +101,21 @@
   background: none;
   border: none;
   outline: none !important;
-  color: white;
+  color: var(--text-color-light);
 }
 .item span[role="img"] {
   font-size: 30px;
-  color: white;
+  color: var(--text-color-light);
 }
 .item span img{
   margin-bottom: 5px;
 }
 .item .right {
   margin-left: auto;
+}
+
+.item[data-mode="dark"] button,  .item[data-mode="dark"] span{
+  color: var(--text-color);
 }
 
 /* CSSTransition classes  */

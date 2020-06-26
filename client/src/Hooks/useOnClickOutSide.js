@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-function useOnClickOutSide(on ,ref, handler){
+function useOnClickOutSide(events ,ref, handler){
+  
   useEffect(() => {
     const listener = (event) => {
       if (!ref.current || ref.current.contains(event.target)) {
@@ -8,15 +9,15 @@ function useOnClickOutSide(on ,ref, handler){
       }
       handler(event);
     };
-    on.forEach(event=>{
-      document.addEventListener(event, listener);
+    events.map(event=>{
+      return document.addEventListener(event, listener);
     })
     return () => {
-      on.forEach(event=>{
-        document.removeEventListener(event, listener);
+      events.map(event=>{
+        return document.removeEventListener(event, listener);
       })
     };
-  }, [ref, handler]);
+  }, [ref, handler, events]);
 }
 
 export default useOnClickOutSide;

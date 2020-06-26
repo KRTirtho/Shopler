@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, Redirect, useHistory, useLocation, withRouter} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import library from '../../fontawesome'
 import ProductEdit from './Profile Page/ProductEdit'

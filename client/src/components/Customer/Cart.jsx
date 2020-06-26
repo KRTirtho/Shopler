@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./customer.style.css/Cart.css";
@@ -13,7 +13,6 @@ import useOnClickOutSide from "../../Hooks/useOnClickOutSide";
 
 
 const Cart = ({
-  userDataState,
   cartState,
   clearCart,
   addToCart,
@@ -21,7 +20,6 @@ const Cart = ({
   markAllRead
 }) => {
   const cartRef = useRef();
-  const { userData } = userDataState;
   const { products, count, notification } = cartState;
   const [open, setOpen] = useState(false);
 
@@ -98,7 +96,6 @@ const Cart = ({
 };
 
 const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
   cartState: state.cartState,
 });
 

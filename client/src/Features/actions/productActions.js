@@ -2,7 +2,9 @@ export const FETCHED_PRODUCTS = "FETCHED_PRODUCTS";
 export const ERROR_GET_PRODUCTS = "ERROR_GET_PRODUCTS";
 export const FETCHING_PRODUCTS = "FETCHING_PRODUCTS";
 export const HAS_NO_MORE_DATA = "HAS_NO_MORE_DATA";
-export const ENABLE_PAGINATE = "ENABLE_PAGINATE"
+export const ENABLE_PAGINATE = "ENABLE_PAGINATE";
+
+export const PAGINATING = "PAGINATING";
 
 export const FETCHED_SINGLE_PRODUCT = "FETCHED_SINGLE_PRODUCT";
 export const ERROR_FETCHING_SINGLE_PRODUCT = "ERROR_FETCHED_SINGLE_PRODUCT";
@@ -44,32 +46,32 @@ export const getProducts = (page, signal) => (dispatch) => {
     });
 };
 
-export const enablePagination = (page)=>dispatch=>{
-  return fetch(`/api/product/all?page=${page}`)
-  .then((res) => {
-    dispatch({
-      type: FETCHING_PRODUCTS,
-    });
-    if (!res.ok) {
-      dispatch({
-        type: ERROR_GET_PRODUCTS,
-      });
-    }
-    return res.json();
-  })
-  .then((json) => {
-    if (json.length>0)dispatch({
-        type: ENABLE_PAGINATE,
-        payload: json,
-      })
-    if(json.length === 0)dispatch({
-      type: HAS_NO_MORE_DATA,
-    });
-  })
-  .catch((err) => {
-    console.log("Error!! failed to fetch data: " + err);
-  });
-}
+// export const enablePagination = (page)=>dispatch=>{
+//   return fetch(`/api/product/all?page=${page}`)
+//   .then((res) => {
+//     dispatch({
+//       type: FETCHING_PRODUCTS,
+//     });
+//     if (!res.ok) {
+//       dispatch({
+//         type: ERROR_GET_PRODUCTS,
+//       });
+//     }
+//     return res.json();
+//   })
+//   .then((json) => {
+//     if (json.length>0)dispatch({
+//         type: ENABLE_PAGINATE,
+//         payload: json,
+//       })
+//     if(json.length === 0)dispatch({
+//       type: HAS_NO_MORE_DATA,
+//     });
+//   })
+//   .catch((err) => {
+//     console.log("Error!! failed to fetch data: " + err);
+//   });
+// }
 
 export const getProductById = (id) => (dispatch) => {
   return fetch("/api/products/" + id)
@@ -137,5 +139,12 @@ export const clearProductCache = ()=>dispatch=>{
 export const clearSingleProductCache = ()=>dispatch=>{
   dispatch({
     type: CLEAR_SINGLE_PRODUCT_CACHE
+  })
+}
+
+export const setPaginating = payload=>dispatch=>{
+  dispatch({
+    type: PAGINATING,
+    payload: payload
   })
 }

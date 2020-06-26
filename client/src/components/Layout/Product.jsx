@@ -11,11 +11,11 @@ import {
 import "./css/Product.css";
 import ViewProductLoader from "../../Loaders/ViewProductLoader";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+// eslint-disable-next-line
 import library from "../../fontawesome"
 import { useRouteMatch } from "react-router-dom";
 
 function Product({
-  match,
   getProductById,
   productState,
   clearSingleProductCache,
@@ -29,11 +29,12 @@ function Product({
   useEffect(() => {
     getProductById(params.productId);
     return () => clearSingleProductCache();
+    // eslint-disable-next-line
   }, [params.productId]);
 
   return (
     <TransitionGroup>
-      <CSSTransition key={single_product._id} classNames="fade" timeout={200}>
+       <CSSTransition classNames="fade-product" timeout={5000}>
         <div className="position-absolute main-container display-flex border-rounded vertical-center">
           {!single_product_loading && !single_product_error ? (
             <>
@@ -79,7 +80,8 @@ function Product({
                   </div>
 
                   <div>
-                    <img src="../assets/CIMG0884.JPG" alt={single_product.username} className="img-md border-circle"/>
+                    {/* Because of no real world user I gave it the user img */}
+                    <img src={single_product?.imgSrc} alt={single_product.username} className="img-md border-circle"/>
                   </div>
                   </div>
 
@@ -92,16 +94,16 @@ function Product({
 
               </div>
             </>
-          ) : single_product_loading ? (
-            <ViewProductLoader />
+          ) : single_product_loading && !single_product_error ? (
+            <ViewProductLoader className="z-index-4"/>
           ) : single_product_error ? (
             <div>May be no internet connection or product is deleted!</div>
           ) : (
             ""
           )}
         </div>
-      </CSSTransition>
-    </TransitionGroup>
+       </CSSTransition>
+     </TransitionGroup>
   );
 }
 

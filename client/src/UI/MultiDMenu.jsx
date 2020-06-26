@@ -3,36 +3,48 @@ import "./css/MultiDMenu.css";
 import { CSSTransition } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logOutUser } from "../Features/actions/userActions";
+// eslint-disable-next-line
 import library from "../fontawesome";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import useOnClickOutside from "../Hooks/useOnClickOutSide"
+import useOnClickOutside from "../Hooks/useOnClickOutSide";
+import { setDarkMode } from "../Features/actions/themeActions";
 
-function MultiDMenu({
-  userDataState,
-  logOutUser,
-}) {
-  const [activeMenu, setActiveMenu] = useState("main");//menu names
-  const [menuHeight, setMenuHeight] = useState(0);//For the menu height
-  const { loggedIn, userData } = userDataState;//menu toggler
+function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
+  const [activeMenu, setActiveMenu] = useState("main"); //menu names
+  const [menuHeight, setMenuHeight] = useState(0); //For the menu height
+  const { loggedIn, userData } = userDataState; //menu toggler
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
-
+  const {darkMode} = theme;
+  const [mode, setMode] = useState("")
+  
   useEffect(() => {
     //For dynamic & animated menu height
     setMenuHeight(
-      parseFloat(dropdownRef.current?.firstChild.offsetHeight+10)
+      parseFloat(
+        dropdownRef.current && dropdownRef.current.firstChild.offsetHeight
+          ? dropdownRef.current.firstChild.offsetHeight + 10
+          : 0
+      )
     );
-    if(!loggedIn)setOpen(false)
-    // Clean Up
-    return ()=>{
-      setActiveMenu("main")
+    if(darkMode){
+      setMode("dark")
     }
-  }, [loggedIn, open]);
+    else if(!darkMode){
+      setMode("")
+    }
+    if (!loggedIn) setOpen(false);
+    // Clean Up
+    return () => {
+      setActiveMenu("main");
+    };
+  }, [loggedIn, open, darkMode]);
+
 
   /* Special hook as anti-click for MultiDMenu */
-  useOnClickOutside(["click", "scroll", "touchstart"] ,dropdownRef, ()=>{
-    setOpen(false)
+  useOnClickOutside(["mousedown", "scroll", "touchstart"], dropdownRef, () => {
+    setOpen(false);
   })
 
   //Calculating height & setting height for animated height
@@ -40,6 +52,10 @@ function MultiDMenu({
     const height = el.offsetHeight + 10;
     setMenuHeight(height);
   }
+
+  const handleDarkModeToggle = (e) => {
+    setDarkMode(!darkMode);
+    };
 
   //Each & Individual item
   const Item = (props) => {
@@ -59,12 +75,13 @@ function MultiDMenu({
     return (
       <div
         onClick={handler}
+        data-mode={mode}
         className={"item hover-filter active-filter " + className}>
-        <span className="left" role="img" aria-label="open">
+        <span data-mode={mode} className="left" role="img" aria-label="open">
           {leftIcon && leftIcon}
         </span>
-        <button>{content}</button>
-        <span className="right" role="img" aria-label="open">
+        <button data-mode={mode} >{content}</button>
+        <span data-mode={mode} className="right" role="img" aria-label="open">
           {rightIcon && rightIcon}
         </span>
       </div>
@@ -76,6 +93,7 @@ function MultiDMenu({
     const { content } = props;
     return (
       <div
+        data-mode={mode}
         {...props}
         onClick={() =>
           props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
@@ -91,19 +109,22 @@ function MultiDMenu({
 
   //For Opening the dropdown & prevent openState of cartMenu if MultiDMEnu is Open
   const toggleDropdown = () => {
-  setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   return (
-    <section className="dropdown-skeleton">{/* Main Container */}
+    <section className="dropdown-skeleton">
+      {/* Main Container */}
       {/* Toggle button for dropdown */}
       <div
         onClick={toggleDropdown}
-        className="border-none align-self-center dropdown-btn">
+        data-mode={mode}
+        className={" border-none align-self-center dropdown-btn "}>
         <FontAwesomeIcon
           onClick={toggleDropdown}
-          className={`dropdown-caret ${open ? "dropdown-caret-active" : ""}`}
           color={open ? "lightskyblue" : "black"}
+          data-mode={mode}
+          className={`dropdown-caret ${open ? "dropdown-caret-active" : ""}`}
           icon={["fas", "caret-up"]}
         />
       </div>
@@ -112,18 +133,20 @@ function MultiDMenu({
       <CSSTransition in={open} timeout={0} unmountOnExit>
         {/* First Dimension {activeMenu("main")} */}
         <div
+          data-mode={mode}
           className="main-wrapper"
           style={{ height: menuHeight }}
           ref={dropdownRef}>
-
           <CSSTransition
             in={activeMenu === "main"}
             classNames="first-menu"
             timeout={500}
             unmountOnExit
-            onEnter={calcHeight} /* Calculating height on each Enter of the different dimension */
-            >
-              {/* Menu itself */}
+            onEnter={
+              calcHeight
+            } /* Calculating height on each Enter of the different dimension */
+          >
+            {/* Menu itself */}
             <div className="menu-skeleton">
               <Item
                 goToMenu="profile"
@@ -136,6 +159,24 @@ function MultiDMenu({
                   />
                 }
               />
+              <label htmlFor="switch" className="width-full no-margin">
+              <Item
+                leftIcon={darkMode ? "🌙" : "☀"}
+                className="position-relative"
+                content={
+                  <label>
+                    <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
+                    <input
+                      type="checkbox"
+                      id="switch"
+                      onChange={handleDarkModeToggle}
+                      checked={darkMode}
+                      className="input-switch position-absolute right-10"
+                    />
+                  </label>
+                }
+              />
+              </label>
               <Item
                 rightIcon={
                   <FontAwesomeIcon
@@ -150,7 +191,6 @@ function MultiDMenu({
               <Item leftIcon="😍" content="FAQ?" />
               <Item leftIcon="😍" content="About" />
             </div>
-
           </CSSTransition>
 
           {/* Second dimension {activeMenu("profile")} */}
@@ -160,9 +200,9 @@ function MultiDMenu({
             timeout={500}
             unmountOnExit
             onEnter={calcHeight}>
-              {/* Profile menu itself */}
+            {/* Profile menu itself */}
             <div className="menu-skeleton">
-                {/* Item for going to the ProfilePage wrapped in a Link */}
+              {/* Item for going to the ProfilePage wrapped in a Link */}
               <Link to={`/${userData.username}/profile`}>
                 <Item
                   leftIcon={
@@ -221,16 +261,15 @@ function MultiDMenu({
               <GoBack />
             </div>
           </CSSTransition>
-
         </div>
       </CSSTransition>
-      
     </section>
   );
 }
 
 const mapStateToProps = (state) => ({
   userDataState: state.userDataState,
+  theme: state.theme
 });
 
-export default connect(mapStateToProps, { logOutUser })(MultiDMenu);
+export default connect(mapStateToProps, { logOutUser, setDarkMode })(MultiDMenu);

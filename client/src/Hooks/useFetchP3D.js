@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 
 /**
  * @author KR.Tirtho 
@@ -18,9 +18,7 @@ export default function useFetchP3D(options = {}) {
   const [error, setError] = useState(false);
   const [resStatus, setResStatus] = useState("");
   const [resStatusText, setResStatusText] = useState("");
-  const { usePopUp } = options;
 
-  
   const request = (url, fetchOption) => {
     const { method, body, headers, useFormData, useResponse, } = fetchOption;
     const option = {

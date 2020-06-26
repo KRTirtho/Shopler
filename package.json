@@ -4,13 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server.js",
+    "server": "nodemon server.js && nodemon --ignore ./client/",
     "client": "cd client && npm start",
     "start-all": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client && npm run build",
-    "install-all": "cd client && npm install",
     "start": "node server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run install-all && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd client && npm install && npm run build"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// eslint-disable-next-line
 import library from "../../../fontawesome";
 import CompletionPopUp  from "../../../UI/CompletionPopUp"
 
@@ -208,6 +209,7 @@ function UserInfo({ userId, loggedIn }) {
         <div className="display-flex justify-content-center">
           <h3 className="text-align-center">Company Info</h3>
           {!inputEditState && (
+            // eslint-disable-next-line
             <a onClick={handleInputEdit} className="m-1 user-select-none">
               <FontAwesomeIcon icon={["fas", "pencil-alt"]} />
             </a>

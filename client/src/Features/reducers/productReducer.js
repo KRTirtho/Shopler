@@ -2,9 +2,9 @@ import {
   FETCHED_PRODUCTS,
   FETCHING_PRODUCTS,
   ERROR_GET_PRODUCTS,
+  PAGINATING,
   HAS_NO_MORE_DATA,
   ERROR_FETCHING_SINGLE_PRODUCT,
-  ENABLE_PAGINATE,
   FETCHING_SINGLE_PRODUCT,
   FETCHED_SINGLE_PRODUCT,
   FETCHING_QUERY_PRODUCT,
@@ -17,6 +17,7 @@ import {
 
 const initialState = {
   products: [],
+  paginating: false,
   single_product: [],
   single_product_loading: true,
   single_product_error: false,
@@ -39,20 +40,17 @@ const productReducer = (state = initialState, action) => {
     case FETCHED_PRODUCTS:
       return {
         ...state,
-        products: action.payload,
+        products: state.paginating? [...state.products,  ...action.payload]: action.payload,
         hasMoreProduct: true,
         loading: false,
         error: false,
       };
-    case ENABLE_PAGINATE:{
+
+    case PAGINATING:
       return {
         ...state,
-        products: [...state.products, ...action.payload],
-        hasMoreProduct: true,
-        loading: false,
-        error: false,
+        paginating: action.payload
       }
-    }
     case ERROR_GET_PRODUCTS:
       return {
         ...state,

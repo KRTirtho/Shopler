@@ -1,3 +1,4 @@
+const path = require("path")
 const express = require("express");
 const bodyParser = require("body-parser");
 const router = require("./routes/route");
@@ -40,18 +41,15 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-//Initial page as response
-
-app.get("/", (req, res) => {
-  res.json("Todo Storage");
-});
-
-//For all routes
-app.use("/api", router);
-
+//For all routes in production
 if(process.env.NODE_ENV==="production"){
-  app.use(express.static(__dirname+"/client/build"))
+  app.use(express.static("client/build"))
+  app.get("*", (req, res)=>{
+    res.sendFile(path.resolve(__dirname , "client", "build", "index.html"))
+  })
 }
+
+app.use("/api", router);
 
 app.listen(PORT, (err)=>{
   if(err)throw new Error("Failed starting the server on: "+PORT)

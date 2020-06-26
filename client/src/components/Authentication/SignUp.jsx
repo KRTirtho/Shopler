@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import "../../libs/Tiny.utility.css";
 import "../../libs/Tiny.Style.css";
@@ -6,6 +6,7 @@ import { NavLink, Redirect } from "react-router-dom";
 import SubmitPopUp from "../../UI/SubmitPopUp";
 import { setLoggedIn, setUserData } from "../../Features/actions/userActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// eslint-disable-next-line
 import library from "../../fontawesome";
 
 

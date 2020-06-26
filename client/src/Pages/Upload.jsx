@@ -43,6 +43,7 @@ const Upload = ({ userDataState }) => {
   };
 
   //Custom hook for fetching data with loading state 
+  // eslint-disable-next-line
   const [request, data, success, fetchError] = useFetchP3D({cleanUp: false});
 
   
@@ -118,6 +119,7 @@ const Upload = ({ userDataState }) => {
       setError(false);
       fileInput.current.value = "";
     }
+    // eslint-disable-next-line
   }, [success, fetchError])
 
   return (
@@ -164,6 +166,7 @@ const Upload = ({ userDataState }) => {
               ></textarea>
             <div className="display-flex flex-col tiny-margin">
               {/* {<img/>} for previewing the files*/}
+              {/* eslint-disable-next-line */}
               <img
                 src={imgPrev}
                 className="img-xl md-margin-bottom"
