@@ -6,4 +6,5 @@
 
 /FileStorage
 
-/.env
+.env
+IBMFunctions.js

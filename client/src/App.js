@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css"
 import { connect } from "react-redux";
 import "./libs/Tiny.utility.css";
-import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Upload from "./Pages/Upload";
 import AppNavBar from "./UI/AppNavBar";
 import Body from "./components/Body";

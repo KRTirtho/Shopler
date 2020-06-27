@@ -14,10 +14,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 // eslint-disable-next-line
 import library from "../../fontawesome"
 import { useRouteMatch } from "react-router-dom";
+import { addToCart } from "../../Features/actions/cartActions"
 
 function Product({
   getProductById,
   productState,
+  addToCart,
   clearSingleProductCache,
 }) {
   const { params } = useRouteMatch()
@@ -88,7 +90,7 @@ function Product({
                 </div>
 
                   <div className="display-flex lg-margin-top">
-                    <button className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
+                    <button onClick={()=>addToCart(single_product)} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
                     <button className="btn bg-color-middarkgray border-radius-top-left-0 border-radius-bottom-left-0 xs-margin-left"><FontAwesomeIcon color="#F13737" icon={["fas", "heart"]}/></button>
                   </div>
 
@@ -113,5 +115,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getProductById,
+  addToCart,
   clearSingleProductCache,
 })(Product);

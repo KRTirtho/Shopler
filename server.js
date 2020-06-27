@@ -1,4 +1,3 @@
-const path = require("path")
 const express = require("express");
 const bodyParser = require("body-parser");
 const router = require("./routes/route");
@@ -9,9 +8,11 @@ const passport = require("./passport")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
+
 const PORT = process.env.PORT || 4000;
 
-const URI = process.env.MONGO_URI ||  "mongodb://127.0.0.1:27017/Todo";
+//! Only for Development
+const URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/Todo";
 
 mongoose.connect(URI, {
   useNewUrlParser: true,
@@ -36,7 +37,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET ||  "hehamigo",
   store: new MongoStore({mongooseConnection: dbConnection}),
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 2
+  }
 }))
 app.use(passport.initialize())
 app.use(passport.session())

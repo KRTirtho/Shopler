@@ -6,6 +6,7 @@ const User = require("../models/User")
 const passport = require("../passport/index")
 const upload = require("../Multer/productImage")
 const uploadUserImage = require("../Multer/userImage")
+const AWS = require('../Multer/productImageIBMCS')
 
 
 //!For testing EndPoint----------------------------------
@@ -38,6 +39,12 @@ router.get("/user-products?", productHandlers.getProductByUserId)
 router.post("/product", upload.single("productImg"), productHandlers.postProduct)
 
 router.delete("/product-delete", productHandlers.deleteProduct)
+
+//??? Uploading & Getting files to AWS + IBM CLOUD STORAGE
+router.get("/aws/product/image", AWS.getProductImage);
+router.post("/aws/product/image", AWS.upload.array('img-file', 1), (req, res, next)=>{
+    res.json(req.files[0]);
+})
 
 //%Update Product
 

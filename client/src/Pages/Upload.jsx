@@ -85,7 +85,6 @@ const Upload = ({ userDataState }) => {
         setError(true);
         setFailContent("Can't upload product!");
       }
-      console.log(success, fetchError) 
     })
     } else if (!loggedIn) {
       setError(true);
@@ -115,7 +114,7 @@ const Upload = ({ userDataState }) => {
         description: "",
         imgPrev: "",
       });
-      setPopUpActive('active')
+      setPopUpActive(true)
       setError(false);
       fileInput.current.value = "";
     }
