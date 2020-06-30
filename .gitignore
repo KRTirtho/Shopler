@@ -8,3 +8,6 @@
 
 .env
 IBMFunctions.js
+.vscode/settings.json
+nodemon.json
+firebase.config.js
