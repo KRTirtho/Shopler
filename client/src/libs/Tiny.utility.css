@@ -997,7 +997,13 @@
 .color-white{
   color: white
 }
+.color-dimwhite{
+  color: #b6b6b6;
+}
 
+.bg-color-dimwhite{
+  background-color: #b6b6b6;
+}
 .bg-color-white{
   background-color: white
 }
