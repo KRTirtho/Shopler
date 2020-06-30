@@ -12,7 +12,7 @@ import {
   ERROR_FETCHING_QUERY_PRODUCT,
   NO_QUERY_PRODUCT_FOUND,
   CLEAR_PRODUCT_CACHE,
-  CLEAR_SINGLE_PRODUCT_CACHE
+  CLEAR_SINGLE_PRODUCT_CACHE,
 } from "../actions/productActions";
 
 const initialState = {

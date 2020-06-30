@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css"
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./libs/Tiny.utility.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Upload from "./Pages/Upload";
@@ -13,32 +13,27 @@ import Product from "./components/Layout/Product";
 import ProfilePage from "./components/Layout/Profile Page/ProfilePage";
 import QueryItem from "./components/QueryItem";
 import Api from "./Pages/Api";
-import {
-  setLoggedIn,
-  setUserData,
-  checkAuthorized,
-} from "./Features/actions/userActions";
+import {checkAuthorized} from "./Features/actions/userActions";
 import ProductEdit from "./components/Layout/Profile Page/ProductEdit";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-const App = ({
-  setLoggedIn,
-  userDataState,
-  setUserData,
-  productState,
-  checkAuthorized,
-}) => {
-  const { products } = productState;
+const App = () => {
+  const {userDataState, theme} = useSelector((state=>state))
+  const dispatch = useDispatch();
   const { loggedIn } = userDataState;
+  const { darkMode } = theme;
 
-  if (productState.isAuthenticated === true) {
-    setLoggedIn(true);
-    setUserData(products.user);
-  }
+
   useEffect(() => {
-    checkAuthorized();
+    dispatch(checkAuthorized())
+    if(darkMode){
+      document.querySelector("body").setAttribute("data-mode", "dark")
+    }
+    else if(!darkMode){
+      document.querySelector("body").setAttribute("data-mode", " ")
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [darkMode]);
 
   return( <>
     <Router>
@@ -118,13 +113,4 @@ const App = ({
   )
 };
 
-const mapStateToProps = (state) => ({
-  productState: state.productState,
-  userDataState: state.userDataState,
-});
-
-export default connect(mapStateToProps, { 
-  setUserData,
-  setLoggedIn,
-  checkAuthorized,
-})(App);
+export default App; 

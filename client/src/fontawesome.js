@@ -1,5 +1,6 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faFacebook, faGithub } from "@fortawesome/free-brands-svg-icons";
+import {} from "@fortawesome/free-regular-svg-icons"
 import {
   faCaretUp,
   faSearch,
@@ -12,10 +13,12 @@ import {
   faShare,
   faEye,
   faArrowCircleLeft,
-  faArrowLeft
+  faArrowLeft,
+  faQuestion
 } from "@fortawesome/free-solid-svg-icons";
 
 export default library.add({
+  faQuestion,
   faCaretUp,
   faSearch,
   faSignOutAlt,
@@ -29,7 +32,8 @@ export default library.add({
   faShare,
   faEye,
   faArrowCircleLeft,
-  faArrowLeft
+  faArrowLeft,
+  faGithub
 });
 
 /**

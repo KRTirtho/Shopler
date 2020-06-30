@@ -4,7 +4,7 @@ import "../libs/Tiny.utility.css";
 import CompletionPopUp from "../UI/CompletionPopUp"
 import useFetchP3D from "../Hooks/useFetchP3D";
 
-const Upload = ({ userDataState }) => {
+const Upload = ({ userDataState, theme }) => {
   const [error, setError] = useState(false); //executes big img-size, unfulfilled fields & completion errors 
   const [popUpActive, setPopUpActive] = useState(false); //For CompletionPopUp state
   const [failContent, setFailContent] = useState("");
@@ -12,6 +12,8 @@ const Upload = ({ userDataState }) => {
   const fileInput = useRef(); //for clearing the previously submitted {file[type=image]} 
   const userId = userData && userData._id ? userData._id : ""; //userId for form submitting
   const username = userData && userData.username ? userData.username : ""; //username for form submitting
+  const {darkMode} = theme;
+  const [mode, setMode] = useState("");
 
   //state for controlling all inputs
   const [inputState, setInputState] = useState({
@@ -118,14 +120,16 @@ const Upload = ({ userDataState }) => {
       setError(false);
       fileInput.current.value = "";
     }
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
     // eslint-disable-next-line
-  }, [success, fetchError])
+  }, [success, fetchError, darkMode])
 
   return (
     <>
       {loggedIn && (
         <div className="vertical-center-strict width-full top-30">
-          <h1 className="text-align-center">Upload your Product</h1>
+          <h1 style={darkMode?{color: "white"}:{color: "inherit"}} className="text-align-center">Upload your Product</h1>
           {/* form container */}
           <form
             className="vertical-center container-div semi-div display-flex flex-col"
@@ -135,6 +139,7 @@ const Upload = ({ userDataState }) => {
             <div className="display-flex">
               {/* {name="title"} */}
               <input
+                data-shade={mode}
                 className="input-custom tiny-margin-bottom"
                 type="text"
                 placeholder="Product Title"
@@ -145,6 +150,7 @@ const Upload = ({ userDataState }) => {
                 />
                 {/* {name="details"} */}
               <input
+                data-shade={mode}
                 className="input-custom tiny-margin-bottom tiny-margin-left"
                 type="text"
                 placeholder="Product Details"
@@ -156,7 +162,8 @@ const Upload = ({ userDataState }) => {
             </div>
             {/* {name="description"} */}
             <textarea
-              className="input-custom tiny-padding"
+              data-shade={mode}
+              className="textarea-custom"
               placeholder="Optional, e.g. My Product is the best"
               style={{ height: "10vh" }}
               onChange={handleInputState}
@@ -173,6 +180,7 @@ const Upload = ({ userDataState }) => {
                 />
                 {/* {name="file"} */}
               <input
+                data-shade={mode}
                 type="file"
                 name="img"
                 className="input-custom tiny-margin-bottom hover-filter"
@@ -194,6 +202,7 @@ const Upload = ({ userDataState }) => {
       )}
       {/* Completion Pop Up component */}
       <CompletionPopUp
+        mode={mode}
         success={success}
         fail={error}
         successContent="Upload Successful"
@@ -207,6 +216,7 @@ const Upload = ({ userDataState }) => {
 
 const mapStateToProps = (state) => ({
   userDataState: state.userDataState,
+  theme: state.theme
 });
 
 export default connect(mapStateToProps)(Upload);

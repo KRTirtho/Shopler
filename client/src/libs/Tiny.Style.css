@@ -465,6 +465,21 @@ a{
     box-shadow: 0 0 2px 2px var(--dark-input-focus-shadow-color) !important;
 }
 
+.textarea-custom{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Dark .textarea-custom */
+.textarea-custom[data-shade="dark"]{
+    background: var(--dark-input-field-bg);
+    color: var(--dark-input-field-color);
+}
+
+.textarea-custom[data-shade="dark"]::placeholder{
+    color: #e2e2e2;
+}
+
 /* Dark version of container div */
 .container-div[data-shade="dark"]{
     background-color: var(--dark-common-bg) !important;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./customer.style.css/Cart.css";
@@ -13,6 +13,7 @@ import useOnClickOutSide from "../../Hooks/useOnClickOutSide";
 
 
 const Cart = ({
+  theme,
   cartState,
   clearCart,
   addToCart,
@@ -22,12 +23,19 @@ const Cart = ({
   const cartRef = useRef();
   const { products, count, notification } = cartState;
   const [open, setOpen] = useState(false);
-
+  const {darkMode} = theme
+  const [mode, setMode] = useState("")
   /*
     ? Place for API Calls
   */
 
+
   useOnClickOutSide(["mousedown", "scroll", "touchstart"], cartRef, ()=>setOpen(false))
+
+  useEffect(()=>{
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
+  }, [darkMode])
 
   const toggleCart = (e) => {
     setOpen(!open);
@@ -37,7 +45,7 @@ const Cart = ({
     <section>
       <div
         onClick={toggleCart}
-        className="user-select-none cursor-pointer hover-filter active-scale position-relative">
+        className={"user-select-none cursor-pointer hover-filter active-scale position-relative"}>
         {notification>0 && <span className="notify-badge">{notification}</span>}
         <FontAwesomeIcon
           onClick={toggleCart}
@@ -53,6 +61,7 @@ const Cart = ({
         mountOnEnter
         unmountOnExit>
         <div
+          data-mode={mode}
           style={
             products.length > 5
               ? { overflowY: "scroll" }
@@ -97,6 +106,7 @@ const Cart = ({
 
 const mapStateToProps = (state) => ({
   cartState: state.cartState,
+  theme: state.theme
 });
 
 export default connect(mapStateToProps, { addToCart ,clearCart, removeFromCart, markAllRead })(Cart);

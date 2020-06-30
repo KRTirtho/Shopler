@@ -74,6 +74,7 @@
 /* Dark */
 .main-wrapper[data-mode="dark"]{
   background-color: var(--bg);
+  box-shadow: 0 5px 10px rgb(37, 37, 37);
 }
 
 .menu-skeleton {

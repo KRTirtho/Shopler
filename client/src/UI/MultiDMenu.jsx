@@ -188,7 +188,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                 content="Settings"
                 goToMenu="settings"
               />
-              <Item leftIcon="😍" content="FAQ?" />
+              <Item leftIcon={<FontAwesomeIcon className="xs-margin-left tiny-margin-right" icon={["fas", "question"]}/>} content="FAQ?" />
               <Item leftIcon="😍" content="About" />
             </div>
           </CSSTransition>
@@ -215,7 +215,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                     ) : (
                       <FontAwesomeIcon
                         icon={["fas", "user-circle"]}
-                        size="2x"
+                        className="xs-margin-left tiny-margin-right"
                       />
                     )
                   }

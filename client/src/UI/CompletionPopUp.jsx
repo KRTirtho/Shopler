@@ -7,7 +7,7 @@ import { CSSTransition } from "react-transition-group";
   */
 
 function CompletionPopUp(props) {
-  const { className, success, fail, successContent, failContent, active, onClick } = props;
+  const { className, success, fail, successContent, failContent, active, onClick, mode } = props;
 
   return (
     <CSSTransition
@@ -15,7 +15,7 @@ function CompletionPopUp(props) {
       classNames="fade-y"
       timeout={500}
       unmountOnExit>
-      <div className={`pop-up-skeleton ${className}`}>
+      <div data-mode={mode} className={`pop-up-skeleton ${className}`}>
         <div className="text-wrapper">
           <h6 className={success ? "color-success" : fail ? "color-fail" : ""}>
             {success && successContent

@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import useFetchP3D from "../../../Hooks/useFetchP3D";
 import useFetchGet from "../../../Hooks/useFetchGet";
 // eslint-disable-next-line
@@ -8,7 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouteMatch } from "react-router-dom";
 import CompletionPopUp from "../../../UI/CompletionPopUp";
 
-const ProductEdit = memo(({ userDataState, match }) => {
+const ProductEdit = memo(({ match }) => {
+  const {userDataState, theme} = useSelector(state=>state)
+  const {darkMode} = theme;
+  const [mode, setMode] = useState("")
   const [popUpActive, setPopUpActive] = useState(false);
   const [inputState, setInputState] = useState({
     title: "",
@@ -93,17 +96,20 @@ const ProductEdit = memo(({ userDataState, match }) => {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-    if (loggedIn)
+    if (loggedIn){
       get(`/api/product/${userData._id}/${params.productId || ""}`, signal);
+    }
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
     return () => {
       controller.abort();
     };
-    // eslint-disable-next-line
-  }, [isImgEditing, isEditing, loggedIn, popUpActive]);
+  }, [isImgEditing, isEditing, loggedIn, popUpActive, darkMode]);
 
   return (
     <>
       <CompletionPopUp
+        mode={mode}
         success={success}
         fail={submitError}
         successContent="Updated product info"
@@ -276,8 +282,5 @@ const ProductEdit = memo(({ userDataState, match }) => {
     </>
   );
 });
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-});
 
-export default connect(mapStateToProps, {})(ProductEdit);
+export default ProductEdit;

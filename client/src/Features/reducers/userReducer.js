@@ -1,4 +1,4 @@
-import { FETCHED_USER_DATA, FETCHING_USER_DATA, ERROR_FETCHING_USER_DATA, LOGGED_IN, SET_USER_DATA, AUTHORIZED, UNAUTHORIZED, LOGGED_OUT, ERROR_LOG_OUT } from "../actions/userActions";
+import { FETCHED_USER_DATA, FETCHING_USER_DATA, ERROR_FETCHING_USER_DATA, LOGGED_IN, SET_USER_DATA, AUTHORIZED, UNAUTHORIZED, LOGGED_OUT, ERROR_LOG_OUT, CLEAR_USER_CACHE } from "../actions/userActions";
 
 const initialState = {
     loggedIn: null,
@@ -64,6 +64,11 @@ const userReducer = (state=initialState, action)=>{
                 userData: action.payload
             }
         }
+        case CLEAR_USER_CACHE:
+            return {
+                ...state,
+                userDataError: false
+            }
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../../libs/Tiny.utility.css";
@@ -15,25 +15,33 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import library from "../../fontawesome"
 import { useRouteMatch } from "react-router-dom";
 import { addToCart } from "../../Features/actions/cartActions"
+import useAffection from "../../Hooks/useAffection";
 
 function Product({
-  getProductById,
+  userDataState,
   productState,
+  getProductById,
   addToCart,
   clearSingleProductCache,
 }) {
   const { params } = useRouteMatch()
+
+  
   const {
     single_product,
     single_product_loading,
-    single_product_error,
-  } = productState;
+    single_product_error} = productState;
+
+  const {userData} = userDataState;
+
+  const [affectionate, postAffection] = useAffection(single_product._id)
+
   useEffect(() => {
     getProductById(params.productId);
     return () => clearSingleProductCache();
     // eslint-disable-next-line
-  }, [params.productId]);
-
+  }, [params.productId, userData.reviewed]);
+  
   return (
     <TransitionGroup>
        <CSSTransition classNames="fade-product" timeout={5000}>
@@ -91,7 +99,7 @@ function Product({
 
                   <div className="display-flex lg-margin-top">
                     <button onClick={()=>addToCart(single_product)} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
-                    <button className="btn bg-color-middarkgray border-radius-top-left-0 border-radius-bottom-left-0 xs-margin-left"><FontAwesomeIcon color="#F13737" icon={["fas", "heart"]}/></button>
+                    <button onClick={()=>postAffection(userData._id)} className="btn bg-color-middarkgray border-radius-top-left-0 border-radius-bottom-left-0 xs-margin-left"><FontAwesomeIcon color={affectionate?"#F13737": "#554"} icon={["fas", "heart"]}/></button>
                   </div>
 
               </div>
@@ -111,6 +119,7 @@ function Product({
 
 const mapStateToProps = (state) => ({
   productState: state.productState,
+  userDataState: state.userDataState
 });
 
 export default connect(mapStateToProps, {
