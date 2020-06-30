@@ -4,6 +4,7 @@ const fs = require("fs");
 
 //*Product Handling---------------------------------------------------
 exports.getProducts = (req, res) => {
+//Function for pagination
   const getAll = (page = 1) => {
     const PAGE_SIZE = 20;
     const skip = (page - 1) * PAGE_SIZE;
@@ -16,6 +17,7 @@ exports.getProducts = (req, res) => {
         res.status(200).json(data);
       });
   };
+
   return getAll(req.query.page);
 };
 
