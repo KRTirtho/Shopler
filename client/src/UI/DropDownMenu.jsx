@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // eslint-disable-next-line
 import fontawesome from "../fontawesome";
 import "./css/DropDownMenu.css";
 import { CSSTransition } from "react-transition-group";
 import { useSelector } from "react-redux"
+import useOnClickOutSide from "../Hooks/useOnClickOutSide"
 
 export const DropDownMenu = (props) => {
   const [open, setOpen] = useState(false);
   const {content, children, selectClass, className} = props;
   const {darkMode} = useSelector(state=>state.theme)
+  const menuRef = useRef()
 
+  useOnClickOutSide(["click", "scroll", "touchstart"], menuRef, ()=>setOpen(false))
 
   return (
     <div className={className+" position-relative"}>
@@ -29,7 +32,7 @@ export const DropDownMenu = (props) => {
         classNames="dropdown-menu"
         timeout={300}
         unmountOnExit>
-        <div data-mode={darkMode&&"dark"} className="option-skeleton">
+        <div ref={menuRef} data-mode={darkMode&&"dark"} className="option-skeleton">
             {children}
         </div>
       </CSSTransition>
