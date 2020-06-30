@@ -1,14 +1,20 @@
 import React from "react"
 import ContentLoader from "react-content-loader"
+import { useSelector } from "react-redux"
 
-const ProductLoader = (props) => (
+const ProductLoader = (props) => {
+  const {theme} = useSelector(state=>state)
+  const {darkMode} = theme;
+
+
+  return(
   <ContentLoader 
     speed={1}
     width={295}
     height={550}
     viewBox="0 0 295 550"
-    backgroundColor="#f5f5f5"
-    foregroundColor="#dfdfdf"
+    backgroundColor={!darkMode?"#f5f5f5":"#666"}
+    foregroundColor={!darkMode?"#dfdfdf": "#333"}
     {...props}
   >
     <rect x="0" y="5" rx="10" ry="10" width="273" height="194" /> 
@@ -25,6 +31,6 @@ const ProductLoader = (props) => (
     <rect x="0" y="444" rx="5" ry="5" width="268" height="12" />
     <rect x="0" y="462" rx="5" ry="5" width="268" height="12" />
   </ContentLoader>
-)
+)}
 
 export default ProductLoader

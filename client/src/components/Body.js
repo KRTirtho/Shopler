@@ -15,14 +15,14 @@ import ProductLoader from "../Loaders/ProductLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 // eslint-disable-next-line
 import { addToCart } from "../Features/actions/cartActions";
-import BodyDiv from "../UI/ProductCard"
+import ProductCard from "../UI/ProductCard"
 
 const Body = React.memo(
   ({
     getProducts,
-    productState,
     addToCart,
     setPaginating,
+    productState,
     theme
   }) => {
     const { products, loading, error, hasMoreProduct } = productState; //*Redux State
@@ -67,11 +67,9 @@ const Body = React.memo(
       if(ignore)abortController.abort()
       if(darkMode){
         setMode("dark")
-        document.querySelector("body").setAttribute("data-mode", "dark")
       }
       else if(!darkMode){
         setMode("")
-        document.querySelector("body").setAttribute("data-mode", " ")
       }
       return () => {
         //% Setting ignore true while component un-mounts
@@ -93,22 +91,23 @@ const Body = React.memo(
             className="display-flex justify-content-center flex-wrap width-full"
           >
 
-          { products && pagination ? (
-            finalProduct.map((d, i) => (
-              <LazyLoad
+          { products ? (
+            finalProduct.map((d, i) =>{ 
+              return (<LazyLoad
               key={uuid.v4()}
               height={400}
               offset={500}
               placeholder={
-                <BodyDiv noChilds={true} loader={true}>
+                <ProductCard mode={mode} noChilds={true} loader={true}>
                     <ProductLoader />
-                  </BodyDiv>
+                  </ProductCard>
                 }
                 >
                 {/**
                  * @Observers_Reference_Logic
                  */}
-                <BodyDiv
+                  <ProductCard
+                  mode={mode}
                   key={uuid.v4()}
                   _id={d._id}
                   imgSrc={d.imgSrc}
@@ -117,42 +116,18 @@ const Body = React.memo(
                   description={d.description}
                   addToCart={()=>concatToCart(d)}
                   />
-              </LazyLoad>
-            ))
-          ) : !loading && !error && !pagination
-          ? finalProduct.map((d, i) => (
-            <LazyLoad
-          key={uuid.v4()}
-          height={400}
-          offset={500}
-          placeholder={
-            <BodyDiv noChilds={true} loader={true}>
-              <ProductLoader />
-            </BodyDiv>
-          }
-          >
-          {/**
-           * @Observers_Reference_Logic
-          */}
-          <BodyDiv
-            _id={d._id}
-            imgSrc={d.imgSrc}
-            title={d.title}
-            details={d.details}
-            description={d.description}
-            addToCart={()=>concatToCart(d)}
-            />
-        </LazyLoad>
-          ))
-          :/**
+              </LazyLoad>)
+            })
+          ):
+          /**
           * @Loading_State_Placeholder
            */
           loading && !error && !pagination && (!products || products.length===0) ? (
             Loader.map((d, i) => (
               <div key={uuid.v4()}>
-                <BodyDiv noChilds={true} loader={true} key={i}>
+                <ProductCard mode={mode} noChilds={true} loader={true} key={i}>
                   <ProductLoader />
-                </BodyDiv>
+                </ProductCard>
               </div>
             ))
             ) : !loading && !pagination && !error ? (
@@ -164,9 +139,9 @@ const Body = React.memo(
           ) : (
             <>
               {Loader.map((d, i) => (
-              <BodyDiv noChilds={true} loader={true} key={i}>
+              <ProductCard mode={mode} noChilds={true} loader={true} key={i}>
                   <ProductLoader />
-                </BodyDiv>
+                </ProductCard>
             ))}
             </>
           )}
@@ -178,14 +153,13 @@ const Body = React.memo(
 
 const mapStateToProps = (state) => ({
   productState: state.productState,
-  userDataState: state.userDataState,
   theme: state.theme
 });
 const ReduxState = connect(mapStateToProps, {
   getProducts,
   clearProductCache,
   setPaginating,
-  addToCart
+  addToCart,
 })(Body);
 
 export default ReduxState;

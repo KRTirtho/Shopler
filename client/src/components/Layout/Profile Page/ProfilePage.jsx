@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { connect } from "react-redux";
-import { getProducts } from "../../../Features/actions/productActions";
+import { useSelector } from "react-redux";
 import UserProductLoader from "../../../Loaders/UserProductLoader";
 import "./css/ProfilePage.css";
 import UserInfo from "./UserInfo";
 import useFetchGet from "../../../Hooks/useFetchGet";
 import {DropDownMenu, Option, Divider} from "../../../UI/DropDownMenu";
 
-const ProfilePage = React.memo(({ userDataState }) => {
+const ProfilePage = React.memo(() => {
+  const {userDataState, theme} = useSelector(state=>state)
+  const {darkMode} = theme;
   const [sort, setSort] = useState("");
   const { loggedIn, userData } = userDataState;
+  const [mode, setMode] = useState("")
 
   const match = useRouteMatch();
 
@@ -26,8 +28,10 @@ const ProfilePage = React.memo(({ userDataState }) => {
 
   useEffect(() => {
     if(loggedIn)get(url)
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
     // eslint-disable-next-line
-  }, [loggedIn, url, sort]);
+  }, [loggedIn, url, sort, darkMode]);
 
   const handleSort = (sortVal) => {
       if (loggedIn) {
@@ -39,7 +43,7 @@ const ProfilePage = React.memo(({ userDataState }) => {
     products && products.length > 0
       ? products.map((product, i) => {
           return (
-            <div key={i%Date.now()/Math.random()} className="product-container position-relative">
+            <div data-mode={mode} key={i%Date.now()/Math.random()} className="product-container position-relative">
               <Link to={`${match.url}/product/${product._id}`}>
                 <div>
                   <img
@@ -47,7 +51,7 @@ const ProfilePage = React.memo(({ userDataState }) => {
                     alt={product.title}
                     className="img-sm tiny-margin border-circle hover-filter"
                   />
-                  <div className="display-flex flex-col">
+                  <div className="display-flex">
                     <h5 className="">{product.title}</h5>
                   </div>
                 </div>
@@ -64,8 +68,8 @@ const ProfilePage = React.memo(({ userDataState }) => {
 
   return (
     <>
-    <div className="display-flex position-absolute width-full profile-page-container">
-      <div className="display-flex flex-col align-items-center upload-container">
+    <div className="display-flex position-absolute width-full">
+      <div data-mode={mode} className="display-flex flex-col align-items-center upload-container">
         <h3 className="text-align-center">Uploaded's</h3>
         <div className="display-flex width-full justify-content-end">
 
@@ -102,6 +106,7 @@ const ProfilePage = React.memo(({ userDataState }) => {
       </div>
 
       <UserInfo
+        mode={mode}
         userId={userData && userData._id ? userData._id : ""}
         loggedIn={loggedIn}
       />
@@ -111,9 +116,4 @@ const ProfilePage = React.memo(({ userDataState }) => {
   );
 })
 
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-  productState: state.productState,
-});
-
-export default connect(mapStateToProps, { getProducts })(ProfilePage);
+export default ProfilePage;

@@ -11,11 +11,18 @@
     margin-bottom: 20px;
     box-shadow: 0 0 10px 0 #bebebe;
 }
+.pop-up-skeleton[data-mode="dark"]{
+    background-color: #333;
+    box-shadow: 0 0 10px 0 #292929;
+}
 .pop-up-skeleton button{
     background: none;
     border: none;
     outline: none !important;
     padding: 5px;
+}
+.pop-up-skeleton[data-mode="dark"] button{
+    color: white;
 }
 .color-success{
     color: #3dd381;

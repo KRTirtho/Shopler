@@ -12,6 +12,9 @@
 .description-container-loader{
     background-color: #fdfdfd !important;
 }
+.description-container-loader[data-mode="dark"]{
+    background-color: #222 !important;
+}
 .description-container h4{
     font-size: 18px;
     color: #888DFF;

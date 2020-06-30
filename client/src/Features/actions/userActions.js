@@ -7,6 +7,7 @@ export const AUTHORIZED = "AUTHORIZED"
 export const UNAUTHORIZED = "UNAUTHORIZED"
 export const LOGGED_OUT = "LOGGED_OUT"
 export const ERROR_LOG_OUT = "ERROR_LOG_OUT"
+export const CLEAR_USER_CACHE = "CLEAR_USER_CACHE"
 
 
 export const postAndGetUserData = givenUserData=>dispatch=>{
@@ -93,5 +94,11 @@ export const setUserData = (payload)=>dispatch=>{
     dispatch({
         type: SET_USER_DATA,
         payload: payload
+    })
+}
+
+export const cleanUserCache = ()=>dispatch=>{
+    dispatch({
+        type: CLEAR_USER_CACHE
     })
 }

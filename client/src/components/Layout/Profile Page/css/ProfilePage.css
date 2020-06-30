@@ -25,6 +25,9 @@
     align-items: center;
     justify-content: space-between;
 }
+.product-container[data-mode="dark"]{
+    background-color: #464646;
+}
 .product-container div{
     display: flex;
     align-items: center;
@@ -34,17 +37,28 @@
     margin: 5px 10px !important;
     font-size: 12px;
 }
-
-
+.product-container[data-mode="dark"] p{
+    color: #cfcfcf;
+}
+.product-container[data-mode="dark"] h5{
+    color: #0084ff;
+}
 .upload-container{
     background: #eeeeee;
     height: 95vh;
     width: 28.453%;
 }
+.upload-container[data-mode="dark"]{
+    background: #343434;
+}
 .upload-container h3{
     width: 100%;
     padding: 10px;
     border-bottom: 1px solid #333;
+}
+.upload-container[data-mode="dark"] h3{
+    color: #ececec;
+    border-bottom: 1px solid #a8a8a8;
 }
 .product-wrapper{
     overflow-y: scroll;
@@ -58,10 +72,16 @@
     height: 95vh;
     background-color: #f8f8f8;
 }
-
+.user-info-container[data-mode="dark"]{
+    background-color: #2c2c2c;
+    color: #f1f1f1;
+}
 .user-info-container .welcome-text{
     background-color: white;
     padding: 10px 0;
+}
+.user-info-container[data-mode="dark"] .welcome-text{
+    background-color: #222;
 }
 
 .user-info-container .welcome-text span{
@@ -71,19 +91,21 @@
 .user-profile-image{
     width: 190px;
     height: 193px;
-    border: 1px solid #555;
+    border: none;
 
 }
 
 .user-info-edit-btn , .user-info-edit-img-btn{
-    border: 1px solid #555;
     border-left: none;
     border-radius: 0 5px 5px 0;
     background-color: #dbdbdb;
     outline: none !important;
     transition: 0.2s all ease-in-out;
+    color: #007ef3;
 }
-
+.user-info-container[data-mode="dark"] .user-info-edit-img-btn{
+    background-color: #333 !important;
+}
 .user-info-edit-img-btn{
     border-radius: 0 0 10px 0;
     border-top: none;
@@ -103,13 +125,25 @@
 
 .user-info-input{
     padding: 3px;
-    border: 1px solid #555;
+    border: none;
     border-radius: 5px;
+    background-color: #ebebeb !important;
+    color: #1f1f1f !important;
     outline: none;
 }
-
+.user-info-container[data-mode="dark"] .user-info-input{
+    background-color: #464646 !important;
+    color: white !important;
+    border: none;
+}
+.user-info-input:disabled{
+    filter: brightness(0.95);
+}
+.user-info-container[data-mode="dark"] .user-info-input:disabled{
+    filter: brightness(0.8);
+}
 #businessEmail, #email{
-    border: 1px solid #555;
+    border: none;
     border-radius: 5px;
 }
 .attention-tag{
@@ -117,6 +151,9 @@
     bottom: -100%;
     left: 15%;
     font-size: 12px;
+}
+.user-info-container[data-mode="dark"] .attention-tag{
+    color: #aaa;
 }
 
 /*% Product Edit Section */

@@ -1,15 +1,23 @@
-import React from 'react'
-import {connect} from "react-redux"
+import React, { useState, useEffect } from 'react'
+import {useSelector} from "react-redux"
 import uuid from "uuid"
 import BodyDiv from "../UI/ProductCard"
 import ProductLoader from '../Loaders/ProductLoader'
 
-function QueryItem({productState, queryProduct}) {
-    const {query_product,
+function QueryItem() {
+  const {productState, theme} = useSelector(state=>state)
+  
+  const {query_product,
         query_product_loading,
         query_product_error,
         no_query_product} = productState
+  const {darkMode} = theme
+  const [mode, setMode] = useState("")
 
+  useEffect(()=>{
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
+  }, [darkMode])
 
 
     return (
@@ -17,6 +25,7 @@ function QueryItem({productState, queryProduct}) {
         <div className="display-flex width-full flex-wrap justify-content-center position-absolute">
           {query_product.result && !query_product_loading && !query_product_error?query_product.result.map(d=>(
             <BodyDiv
+            mode={mode}
             key={uuid.v4()}
             _id = {d._id}
             imgSrc={d.imgSrc}
@@ -35,8 +44,5 @@ function QueryItem({productState, queryProduct}) {
         </div>
     )
 }
-const mapStateToProps = state=>({
-    productState: state.productState
-  })
   
-export default connect(mapStateToProps, {})(QueryItem)
+export default QueryItem

@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {connect} from "react-redux"
 import "../../libs/Tiny.utility.css";
 import "../../libs/Tiny.Style.css";
 import { Link, Redirect } from "react-router-dom";
 import SubmitPopUp from "../..//UI/SubmitPopUp"
-import { postAndGetUserData, setLoggedIn } from "../../Features/actions/userActions"
+import { postAndGetUserData, cleanUserCache } from "../../Features/actions/userActions"
 
 
-function Login({setLoggedIn, userDataState, postAndGetUserData}) {
+function Login({ userDataState, postAndGetUserData, cleanUserCache, theme}) {
   const [emailValue, setEmailValue] = useState(""); //Controlled Email input
   const [passValue, setPassValue] = useState(""); //Controlled Pass input
   const [popUpActive, setPopUpActive] = useState('inactive') //Pop-up handling for error or success
+  const [mode, setMode] = useState("")
+  const {darkMode} = theme;
 
   const {userData, userDataError, loggedIn} = userDataState
   const error = userDataError
@@ -29,33 +31,38 @@ const loginSubmit = (e) => {
   e.preventDefault()
   postAndGetUserData({emailValue, passValue})
   setPopUpActive('active')//!Pop up active
-
-  if(!userDataError && userData.username){
-    setEmailValue('')
-    setPassValue('')
-  }
-  else if(userDataError){
-    setLoggedIn(false)
-  }
   };
+
+  useEffect(()=>{
+    if(!userDataError && userData.username){
+      setEmailValue("")
+      setPassValue("")
+    }
+    if(darkMode)setMode("dark")
+    else if(!darkMode)setMode("")
+  }, [userDataError, userData.username, darkMode])
   
 //-----------------------------------------------------------
 return (
   <>
       {!loggedIn &&
-      <div className="width-quarter container-div vertical-center-strict top-30 border-rounded md-padding tiny-shadow">
+      <div data-shade={mode} className="width-quarter container-div vertical-center-strict top-30 border-rounded md-padding tiny-shadow">
         {/* Submit Pop Up */}
       <SubmitPopUp
         success={loggedIn}
         fail = {error}
         successContent = "You're now logged in!"
         failContent = "Email or Password is not correct!"
-        hideControl={()=>setPopUpActive('inactive')}
+        hideControl={()=>{
+          setPopUpActive('inactive')
+          cleanUserCache()
+        }}
         active = {popUpActive}
         />
         <h1 className="text-align-center">Login</h1>
         <form onSubmit={loginSubmit} className="display-flex flex-col">
           <input
+            data-shade={mode}
             type="email"
             name="userEmail"
             placeholder="Email"
@@ -65,6 +72,7 @@ return (
             value={emailValue}
             />
           <input
+            data-shade={mode}
             type="password"
             name="userPassword"
             placeholder="Password"
@@ -94,7 +102,8 @@ return (
 }
 
 const mapStateToProps = (state)=>({
-  userDataState: state.userDataState
+  userDataState: state.userDataState,
+  theme: state.theme
 })
 
-export default connect(mapStateToProps, {setLoggedIn, postAndGetUserData})(Login);
+export default connect(mapStateToProps, {postAndGetUserData, cleanUserCache})(Login);

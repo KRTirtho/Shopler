@@ -5,7 +5,7 @@ import library from "../../../fontawesome";
 import CompletionPopUp  from "../../../UI/CompletionPopUp"
 
 
-function UserInfo({ userId, loggedIn }) {
+function UserInfo({ userId, loggedIn, mode }) {
   /** 
   * @State management
   * @UseState
@@ -184,9 +184,10 @@ function UserInfo({ userId, loggedIn }) {
   }, [loggedIn, inputEditState, popUpActive, userId]);
   
   return (
-    <div className="user-info-container">
+    <div data-mode={mode} className="user-info-container">
       {/* Pop Up Dialog*/}
       <CompletionPopUp 
+        mode={mode}
         success={userUpdated}
         fail={updateError}
         successContent={successContent}
@@ -502,7 +503,7 @@ function UserInfo({ userId, loggedIn }) {
                     onClick={(e)=>{
                       setImgSrc([])
                       setImgEditState(false)}}
-                    className="btn btn-light tiny-margin-left tiny-shadow"
+                    className={"btn tiny-margin-left tiny-shadow"}
                   >
                     Cancel
                   </button>

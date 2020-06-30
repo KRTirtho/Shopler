@@ -1,14 +1,21 @@
 import React from 'react'
+import {useSelector} from "react-redux"
 import { Link } from 'react-router-dom';
 import ProductImageLoader from '../Loaders/ProductImageLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "./css/ProductCard.css"
+import useAffection from '../Hooks/useAffection';
 
+export default React.memo((props) => {
+  const {userData} = useSelector(state=>state.userDataState)
+  const {mode, _id} = props;
 
-export default (props) => {
+  const [affectionate, postAffectionate] = useAffection(_id)
+
     return (
       <div
         id={props.id}
+        data-mode={mode}
         className={
           props.loader
             ? "description-container description-container-loader"
@@ -72,8 +79,9 @@ export default (props) => {
               <button
                 title="Give affection to the seller"
                 className="description-btn active-filter hover-filter heart"
+                onClick={()=>postAffectionate(userData._id)}
               >
-                <FontAwesomeIcon color="#606060" icon={["fas", "heart"]} />
+                <FontAwesomeIcon color={affectionate?"red":"#606060"} icon={["fas", "heart"]} />
               </button>
               <Link to={`/products/${props._id}`}>
               <button
@@ -95,4 +103,4 @@ export default (props) => {
         {props.children}
       </div>
     );
-  };
+  })

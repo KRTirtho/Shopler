@@ -1,0 +1,41 @@
+.social-btn{
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+    margin: 10px;
+    border-radius: 5px;
+    align-items: center;
+    height: 40px;
+    width: 70%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-55%);
+    user-select: none !important;
+}
+.social-btn a{
+    text-decoration: none;
+    padding: 10px;
+}
+.social-btn .google, .social-btn .github{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    height: 100%;
+    width: 20%;
+    border-radius: 0 5px 5px 0;
+    font-size: 1.6rem;
+}
+.google{
+    background-color: rgb(47, 155, 255);
+}
+.github{
+    background-color: #1d1d1d;
+}
+
+.social-btn[data-shade="dark"]{
+    background-color: #444;
+}
+.social-btn[data-shade="dark"] a{
+    color: #87affa !important;
+}

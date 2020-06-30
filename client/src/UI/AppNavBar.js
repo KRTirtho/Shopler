@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "../libs/Tiny.utility.css";
 import "./css/AppNavBar.css";
 import { NavLink, Link } from "react-router-dom";
@@ -10,7 +10,10 @@ import library from "../fontawesome";
 import Cart from "../components/Customer/Cart";
 import MultiDMenu from "./MultiDMenu";
 
-function AppNavBar({ userDataState, queryProduct, theme }) {
+function AppNavBar() {
+  const {userDataState, theme} = useSelector(state=>state)
+  const dispatch = useDispatch();
+  
   const [mode, setMode] = useState("");
   const { darkMode } = theme;
   const { loggedIn } = userDataState;
@@ -37,6 +40,7 @@ function AppNavBar({ userDataState, queryProduct, theme }) {
     <NavBar>
       <NavBar>
         <NavBrand>
+          <img className="brand-img" src="/assets/ShoplerIconTransparent.svg" alt="Shopler"/>
           <h2 style={mode?{color: "#fff"}:{ color: "#333" }}>Shopler</h2>
         </NavBrand>
 
@@ -44,7 +48,7 @@ function AppNavBar({ userDataState, queryProduct, theme }) {
           <ul className="display-flex  list-style-none">
             <NavItemSearch
               mode={mode}
-              queryProduct={queryProduct}
+              queryProduct={(value)=>dispatch(queryProduct(value))}
               placeholder="Search"></NavItemSearch>
             <NavLink activeClassName="link" to="/" exact>
               <NavItem content="Home" />
@@ -58,9 +62,6 @@ function AppNavBar({ userDataState, queryProduct, theme }) {
 
             <NavLink exact to="/api">
               <NavItem content="Api" />
-            </NavLink>
-            <NavLink to="*">
-              <NavItem content="Documentation" />
             </NavLink>
 
             {!loggedIn && (
@@ -94,7 +95,9 @@ function AppNavBar({ userDataState, queryProduct, theme }) {
 const NavBrand = (props) => {
   return (
     <div className="display-inline-block float-left lg-margin-left">
+    <div className="display-flex align-items-center">
       {props.children}
+    </div>
     </div>
   );
 };
@@ -157,9 +160,4 @@ const NavItemSearch = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-  theme: state.theme
-});
-
-export default connect(mapStateToProps, { queryProduct })(AppNavBar);
+export default AppNavBar;
