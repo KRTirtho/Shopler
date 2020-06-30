@@ -9,3 +9,4 @@
 .env
 IBMFunctions.js
 firebase.config.js
+nodemon.json
