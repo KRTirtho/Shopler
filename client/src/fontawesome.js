@@ -14,10 +14,21 @@ import {
   faEye,
   faArrowCircleLeft,
   faArrowLeft,
-  faQuestion
+  faQuestion,
+  faAngleRight,
+  faThumbsUp,
+  faUser,
+  faHistory,
+  faComment,
+  faVoteYea
 } from "@fortawesome/free-solid-svg-icons";
 
 export default library.add({
+  faVoteYea,
+  faComment,
+  faHistory,
+  faUser,
+  faThumbsUp,
   faQuestion,
   faCaretUp,
   faSearch,
