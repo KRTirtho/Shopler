@@ -94,9 +94,34 @@
   color: var(--text-color);
   background-color: var(--item-bg);
 }
+.go-back {
+  background: none !important;
+  border-bottom: 1px solid #b6b6b6;
+  border-radius: 0px;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+.go-back-btn{
+  border-radius: 50%;
+  background-color: #ffffff !important;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0;
+  margin-right: 10px;
+}
 
 .go-back span{
   margin-right: 5px;
+}
+
+.go-back[data-mode="dark"]{
+  color: #cdcdcd
+}
+.go-back[data-mode="dark"] .go-back-btn{
+  background-color: #5a5a5a !important;
 }
 .item button {
   background: none;

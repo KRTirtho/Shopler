@@ -8,6 +8,8 @@
         "fortawesome",
         "midgray",
         "originalname",
-        "postbuild"
+        "postbuild",
+        "resave",
+        "signup"
     ]
 }

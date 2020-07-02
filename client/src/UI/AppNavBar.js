@@ -16,7 +16,7 @@ function AppNavBar() {
   
   const [mode, setMode] = useState("");
   const { darkMode } = theme;
-  const { loggedIn } = userDataState;
+  const { loggedIn, userData } = userDataState;
 
   useEffect(() => {
     if (darkMode) setMode("dark");
@@ -62,6 +62,10 @@ function AppNavBar() {
 
             <NavLink exact to="/api">
               <NavItem content="Api" />
+            </NavLink>
+
+            <NavLink exact to={`/${userData._id}/dashboard`}>
+                <NavItem content="Dashboard"/>
             </NavLink>
 
             {!loggedIn && (

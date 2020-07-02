@@ -94,15 +94,18 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
     return (
       <div
         data-mode={mode}
-        {...props}
-        onClick={() =>
-          props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
-        }
-        className="item go-back hover-filter active-filter">
-        <span role="img" aria-label="open">
-          <FontAwesomeIcon icon={["fas", "arrow-circle-left"]} />
-        </span>
-        <button>{content || "Go Back"}</button>
+        className="item go-back">
+          <button className="go-back-btn hover-filter active-filter"
+            {...props}
+            onClick={() =>
+              props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
+            }
+          >
+            <span role="img" aria-label="open">
+              <FontAwesomeIcon icon={["fas", "angle-right"]} flip="horizontal" />
+            </span>
+          </button>
+          <h4>{props.menuName}</h4>
       </div>
     );
   };
@@ -150,12 +153,14 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
             <div className="menu-skeleton">
               <Item
                 goToMenu="profile"
-                leftIcon="😍"
+                leftIcon={<FontAwesomeIcon
+                  icon={["fas", "user-circle"]}
+                className="xs-margin-left tiny-margin-right"
+              />}
                 content="Profile"
                 rightIcon={
                   <FontAwesomeIcon
-                    icon={["fas", "arrow-left"]}
-                    flip="horizontal"
+                    icon={["fas", "angle-right"]}
                   />
                 }
               />
@@ -180,8 +185,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
               <Item
                 rightIcon={
                   <FontAwesomeIcon
-                    icon={["fas", "arrow-left"]}
-                    flip="horizontal"
+                    icon={["fas", "angle-right"]}
                   />
                 }
                 leftIcon="😍"
@@ -202,6 +206,8 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
             onEnter={calcHeight}>
             {/* Profile menu itself */}
             <div className="menu-skeleton">
+              {/* Menu Name */}
+              <GoBack menuName="Profile"/>
               {/* Item for going to the ProfilePage wrapped in a Link */}
               <Link to={`/${userData.username}/profile`}>
                 <Item
@@ -211,13 +217,13 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                         className="img-sm border-circle"
                         src={userData.imgSrc}
                         alt={userData?.username}
-                      />
-                    ) : (
-                      <FontAwesomeIcon
-                        icon={["fas", "user-circle"]}
+                        />
+                        ) : (
+                          <FontAwesomeIcon
+                          icon={["fas", "user-circle"]}
                         className="xs-margin-left tiny-margin-right"
                       />
-                    )
+                      )
                   }
                   content={
                     <span className="">
@@ -229,20 +235,26 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                 />
               </Link>
 
-              <Item leftIcon="😍" content="Events" />
-              <Item leftIcon="😍" content="Likes" />
+              <Item leftIcon={<FontAwesomeIcon
+                    style={{
+                      fontSize: 23
+                    }}
+                    color="lightblue"
+                    icon={["fas", "thumbs-up"]}
+                    className="xs-margin-left tiny-margin-right"
+                  />} content="Likes" />
+              <Item leftIcon="😍" content="Events"/>
               <Item
                 onClick={() => logOutUser()}
                 leftIcon={
                   <FontAwesomeIcon
-                    className="tiny-margin-left"
-                    color="#ff6689"
+                  className="tiny-margin-left"
+                  color="#ff6689"
                     icon={["fas", "sign-out-alt"]}
                   />
                 }
                 content="Log Out"
               />
-              <GoBack />
             </div>
           </CSSTransition>
 
@@ -254,11 +266,11 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
             unmountOnExit
             onEnter={calcHeight}>
             <div className="menu-skeleton">
+                <GoBack menuName="Settings"/>
               <Item leftIcon={"😎"} content="HTML" />
               <Item leftIcon={"😎"} content="CSS" />
               <Item leftIcon={"😎"} content="JavaScript" />
               <Item leftIcon={"😎"} content="Awesome" />
-              <GoBack />
             </div>
           </CSSTransition>
         </div>
