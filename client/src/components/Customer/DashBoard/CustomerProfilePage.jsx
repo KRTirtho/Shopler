@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 export const CustomerProfilePage = () => {
     return (
         <div>
-            
+             
             
         </div>
     )
