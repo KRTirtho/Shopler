@@ -66,7 +66,7 @@ function AppNavBar() {
               <NavItem content="Api" />
             </NavLink>
 
-            <NavLink exact to={`/${userData._id}/dashboard`}>
+            <NavLink exact to={`/${userData._id}/dashboard/profile`}>
                 <NavItem content="Dashboard"/>
             </NavLink>
 

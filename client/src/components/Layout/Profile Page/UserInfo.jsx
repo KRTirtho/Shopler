@@ -308,7 +308,7 @@ function UserInfo({ userId, loggedIn, mode }) {
                 htmlFor="userImg"
                 className="user-info-edit-img-btn position-absolute right-0"
               >
-                <FontAwesomeIcon icon={["fas", "pencil-alt"]} />
+                <FontAwesomeIcon icon={["fas", "camera"]} />
               </label>
             </div>
           </div>
