@@ -20,5 +20,6 @@ passport.deserializeUser((id, done)=>{
 })
 
 passport.use(LocalStrategy)
+passport.use("github", GithubStrategy)
 
 module.exports = passport

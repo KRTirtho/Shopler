@@ -96,11 +96,16 @@ exports.getLoggedIn = (req, res) => {
     username: req.user.username,
     email: req.user.email,
     age: req.user.age,
-    imgSrc: req.user.imgSrc
-  };
+    imgSrc: req.user.imgSrc,
+    reviewed: req.user.reviewed,
+    commented: req.user.commented
+    };
   res.json(userInfo);
 };
-
+/**
+ * @body null
+ * @user {user: Object}
+  */
 exports.logOut = (req, res) => {
   if (req.user || !req.user) {
     req.logOut();
@@ -109,7 +114,10 @@ exports.logOut = (req, res) => {
     res.status(400).json({ Error: "No user to log out!" });
   }
 };
-
+/**
+ * @params {userId}
+ * @res <User> Model
+  */
 exports.getUserInfo = async (req, res) => {
   if (req.isAuthenticated && req.params.userId) {
     try {
@@ -156,6 +164,7 @@ exports.updateUserInfo = async (req, res) => {
           res.status(200).json({ Success: "Updated user" });
         }
       );
+      return findUserAndUpdate
     } catch (err) {
       res.status(403).json({ Error: "Failed to find the user!" });
     }
@@ -163,7 +172,10 @@ exports.updateUserInfo = async (req, res) => {
     res.status(401).json({ Error: "Unauthorized!" });
   }
 };
-
+/**
+ * @body {userId, prevImgSrc}
+ * @res {Flash}
+  */
 exports.updateUserImage = async (req, res) => {
   if (req.isAuthenticated() || !req.isAuthenticated()) {
     try {

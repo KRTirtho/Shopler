@@ -15,6 +15,22 @@ let userSchema = new mongoose.Schema({
     zipCode: {type: Number, required: true},
 	region: {type: String, required: true},
 	imgSrc: {type: String, required: false},
+	type: { type: String },
+  githubId: { type: Number },
+  googleId: Number,
+  reviewed: [
+    {
+      productId: mongoose.SchemaTypes.ObjectId,
+    },
+    ],
+  commented: [
+    {
+      productId: mongoose.SchemaTypes.ObjectId,
+    },
+  ],
+  cart: [
+    {productId: mongoose.SchemaTypes.ObjectId, quantity: Number}
+  ]
 })
 
 userSchema.methods = {
