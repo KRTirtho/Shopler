@@ -20,10 +20,20 @@ import {
   faUser,
   faHistory,
   faComment,
-  faVoteYea
+  faVoteYea,
+  faWrench,
+  faCamera,
+  faEdit,
+  faCartPlus,
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default library.add({
+  faPaperPlane,
+  faCartPlus,
+  faEdit,
+  faCamera,
+  faWrench,
   faVoteYea,
   faComment,
   faHistory,

@@ -1,3 +1,8 @@
 {
-    "ignore": ["client/*", "*.json"]
+    "ignore": ["client/*", "*.json"],
+    "env": {
+        "GITHUB_CLIENT_ID": "e6828c1d45753a29ccd7",
+        "GITHUB_CLIENT_SECRET": "6247adcdd953bab103b9282644db33f3954241b0",
+        "NODE_ENV": "development"
+    }
 }

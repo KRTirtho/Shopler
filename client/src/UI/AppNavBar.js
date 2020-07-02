@@ -63,10 +63,12 @@ function AppNavBar() {
             <NavLink exact to="/api">
               <NavItem content="Api" />
             </NavLink>
-
-            <NavLink exact to={`/${userData._id}/dashboard`}>
+            {
+              loggedIn &&
+            <NavLink exact to={`/${userData._id}/dashboard/profile`}>
                 <NavItem content="Dashboard"/>
             </NavLink>
+            }
 
             {!loggedIn && (
               <div className="display-flex">
