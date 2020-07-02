@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const useAffection = (productId) => {
-  const { userDataState } = useSelector((state) => state);
-
-  const {userData} = userDataState
+  const { userData } = useSelector((state) => state.userDataState);
 
   const [affectionate, setAffectionate] = useState(false);
+
 
   useEffect(() => {
     const found = ()=>userData.reviewed?.map((review) => {

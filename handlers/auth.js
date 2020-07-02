@@ -5,12 +5,17 @@ const fs = require("fs")
 //! Api End point test-----
 exports.getUsers = (req, res) => {
   User.find().exec((err, data) => {
-    if (err) res.status(404).json({ Error: "No user available!" });
-    res.status(404).json(data);
+    if (err) res.status(500).json({ Error: "Unknown error failed query database!" });
+    else if(!data||data.length===0)res.status(404).json({ Error: "No user available!" });
+    res.status(200).json(data);
   });
 };
 
 //*User SignUp Handling-----------------------------------------------------
+/**
+  *@body {username, email, password, age, companyName, businessEmail, address, country, zipCode, region}
+  *@res {Flash}
+  */
 exports.signupUser = async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -32,11 +37,7 @@ exports.signupUser = async (req, res) => {
         else if (result.length === 0) {
           newUser.save((err, user) => {
             if (err) res.status(500).json({ Error: "Failed to save!" });
-            res.status(200).json({
-              username: user.username,
-              email: user.email,
-              _id: user._id,
-            });
+            res.status(200).json({Success: "You are signed up"});
           });
         } else if (result.length > 0) {
           res.status(403).json({ Error: "Email already taken" });
@@ -52,6 +53,10 @@ exports.signupUser = async (req, res) => {
 };
 
 //*Middleware for signUp user-------
+/**
+  * @body username
+  * @res null
+  */
 exports.isAvailableUsername = async (req, res, next) => {
   const isAvailable = await User.find(
     { username: req.body.username },
@@ -66,9 +71,13 @@ exports.isAvailableUsername = async (req, res, next) => {
 };
 
 //*Authorization Checking Route handler
+/**
+ * @user {_id}
+ * @res {Login (Flash), email, username, _id, imgSrc, reviewed, commented} 
+  */
 exports.isAuthorized = (req, res) => {
   if (req.isAuthenticated()) {
-    const userInfo = User.findById(req.user._id).select("username email imgSrc").exec((err, user) => {
+    const userInfo = User.findById(req.user._id).select("username email imgSrc reviewed commented").exec((err, user) => {
       if (err) res.status(500).json({ Error: "Failed to authorize" });
       else if (!user || user.length === 0)
         res
@@ -80,7 +89,9 @@ exports.isAuthorized = (req, res) => {
           email: user.email,
           username: user.username,
           _id: user._id,
-          imgSrc: user.imgSrc
+          imgSrc: user.imgSrc,
+          reviewed: user.reviewed,
+          commented: user.commented
         });
       }
     });
@@ -89,18 +100,26 @@ exports.isAuthorized = (req, res) => {
   }
 };
 //*------------------------------------------------------------------
-
+/**
+ * @body null
+ * @res {_id, username, email, age, imgSrc, reviewed, commented}
+  */
 exports.getLoggedIn = (req, res) => {
   const userInfo = {
     _id: req.user.id,
     username: req.user.username,
     email: req.user.email,
     age: req.user.age,
-    imgSrc: req.user.imgSrc
-  };
+    imgSrc: req.user.imgSrc,
+    reviewed: req.user.reviewed,
+    commented: req.user.commented
+    };
   res.json(userInfo);
 };
-
+/**
+ * @body null
+ * @user {user: Object}
+  */
 exports.logOut = (req, res) => {
   if (req.user || !req.user) {
     req.logOut();
@@ -109,7 +128,10 @@ exports.logOut = (req, res) => {
     res.status(400).json({ Error: "No user to log out!" });
   }
 };
-
+/**
+ * @params {userId}
+ * @res <User> Model
+  */
 exports.getUserInfo = async (req, res) => {
   if (req.isAuthenticated && req.params.userId) {
     try {
@@ -132,6 +154,10 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
+/**
+ * @body {username, age, companyName, address, country, zipCode, region}
+ * @res {Flash}
+  */
 exports.updateUserInfo = async (req, res) => {
   if (req.isAuthenticated()) {
     try {
@@ -156,6 +182,7 @@ exports.updateUserInfo = async (req, res) => {
           res.status(200).json({ Success: "Updated user" });
         }
       );
+      return findUserAndUpdate
     } catch (err) {
       res.status(403).json({ Error: "Failed to find the user!" });
     }
@@ -163,7 +190,10 @@ exports.updateUserInfo = async (req, res) => {
     res.status(401).json({ Error: "Unauthorized!" });
   }
 };
-
+/**
+ * @body {userId, prevImgSrc}
+ * @res {Flash}
+  */
 exports.updateUserImage = async (req, res) => {
   if (req.isAuthenticated() || !req.isAuthenticated()) {
     try {
