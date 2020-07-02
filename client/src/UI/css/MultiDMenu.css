@@ -79,20 +79,20 @@
 
 .menu-skeleton {
   width: 100%;
+  margin-top: 5px;
 }
 .item {
   color: var(--text-color-light);
-  background: var(--item-bg-light);
-  margin: 5px 10px;
+  background: var(--bg-light);
+  margin: 0;
   display: flex;
   align-items: center;
-  border-radius: var(--border-radius);
   transition: all var(--speed);
   padding: 0 10px;
 }
 .item[data-mode="dark"]{
   color: var(--text-color);
-  background-color: var(--item-bg);
+  background-color: var(--bg);
 }
 .go-back {
   background: none !important;
@@ -119,7 +119,7 @@
   color: #cdcdcd
 }
 .go-back[data-mode="dark"] .go-back-btn{
-  background-color: #5a5a5a !important;
+  background-color: #242424 !important;
 }
 .item button {
   background: none;

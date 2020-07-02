@@ -61,7 +61,7 @@
 }
 .customer-details-edit-btn button, .customer-details-btn button{
     background: #3686FF;
-    padding: 5px;
+    padding: 5px 10px;
     border: none;
     color: white;
     border-radius: 5px;
