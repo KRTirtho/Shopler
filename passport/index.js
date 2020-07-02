@@ -1,6 +1,7 @@
 const passport = require("passport")
 const LocalStrategy = require("./LocalStrategy")
 const User = require("../models/User")
+const GithubStrategy = require("./GithubStrategy")
 
 //Serializing user
 

@@ -32,11 +32,7 @@ exports.signupUser = async (req, res) => {
         else if (result.length === 0) {
           newUser.save((err, user) => {
             if (err) res.status(500).json({ Error: "Failed to save!" });
-            res.status(200).json({
-              username: user.username,
-              email: user.email,
-              _id: user._id,
-            });
+            res.status(200).json({Success: "Signed Up"});
           });
         } else if (result.length > 0) {
           res.status(403).json({ Error: "Email already taken" });
@@ -68,7 +64,7 @@ exports.isAvailableUsername = async (req, res, next) => {
 //*Authorization Checking Route handler
 exports.isAuthorized = (req, res) => {
   if (req.isAuthenticated()) {
-    const userInfo = User.findById(req.user._id).select("username email imgSrc").exec((err, user) => {
+    const userInfo = User.findById(req.user._id).select("username email imgSrc reviewed commented").exec((err, user) => {
       if (err) res.status(500).json({ Error: "Failed to authorize" });
       else if (!user || user.length === 0)
         res
@@ -80,10 +76,13 @@ exports.isAuthorized = (req, res) => {
           email: user.email,
           username: user.username,
           _id: user._id,
-          imgSrc: user.imgSrc
+          imgSrc: user.imgSrc,
+          reviewed: user.reviewed,
+          commented: user.commented
         });
       }
     });
+    return userInfo
   } else {
     return res.status(400).json({ Login: false, message: "User unauthorized" });
   }
@@ -96,6 +95,9 @@ exports.getLoggedIn = (req, res) => {
     username: req.user.username,
     email: req.user.email,
     age: req.user.age,
+    imgSrc: req.user.imgSrc,
+    reviewed: req.user.reviewed,
+    commented: req.user.commented,
     imgSrc: req.user.imgSrc,
     reviewed: req.user.reviewed,
     commented: req.user.commented
@@ -191,6 +193,7 @@ exports.updateUserImage = async (req, res) => {
           });
         }
       );
+      return findUserAndUpdateImage
     } catch (err) {
       res.status(403).json({ Error: "Failed to find the user!" });
     }
