@@ -1,7 +1,6 @@
 const passport = require("passport")
 const LocalStrategy = require("./LocalStrategy")
 const User = require("../models/User")
-const GithubStrategy = require("./GithubStrategy")
 
 //Serializing user
 
@@ -20,8 +19,6 @@ passport.deserializeUser((id, done)=>{
     })
 })
 
-passport.use("local", LocalStrategy)
-passport.use("github", GithubStrategy)
-
+passport.use(LocalStrategy)
 
 module.exports = passport
