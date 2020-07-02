@@ -68,7 +68,7 @@ export const CustomerProfilePage = () => {
                      <button className="hover-filter active-filter">Shop More <FontAwesomeIcon icon={["fas", "cart-plus"]}/></button>
                     </Link>
 
-                    <Link>
+                    <Link to="*">
                      <button className="hover-filter active-filter tiny-margin-left">Check Out <FontAwesomeIcon icon={["fas", "paper-plane"]}/></button>
                     </Link>
                 </div>

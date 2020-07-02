@@ -3,25 +3,33 @@ import {useSelector, useDispatch} from"react-redux"
 import {BrowserRouter as Router, Switch, Route, useRouteMatch, withRouter} from "react-router-dom"
 import SideBar from './DashBoardStatic/SideBar'
 import CustomerProfilePage from './CustomerProfilePage'
+import { TransitionGroup, CSSTransition } from "react-transition-group"
 
-function DashBoard() {
+
+function DashBoard({location}) {
     //Router match for Dynamic URL
     const {path} = useRouteMatch()
-    console.log(useRouteMatch())
+
+    console.log(location)
 
     return (
         // <Router>
         <div className="position-absolute width-full">
             {/* SideBar for all component's navigation */}
             <SideBar/>
-            <Switch>
-                {/* All the pages */}
-                <Route path={`${path}/profile`}>
-                <CustomerProfilePage/>
-                </Route>
-            </Switch>
+            
+            <TransitionGroup>
+                <CSSTransition key={location.key} classNames="fade" timeout={500}>
+                    <Switch location={location}>
+                        {/* All the pages */}
+                        <Route path={`${path}/profile`}>
+                        <CustomerProfilePage/>
+                        </Route>
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
         </div>
     )
 }
 
-export default DashBoard
+export default withRouter(DashBoard)
