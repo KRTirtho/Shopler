@@ -13,6 +13,8 @@ import MultiDMenu from "./MultiDMenu";
 function AppNavBar() {
   const {userDataState, theme} = useSelector(state=>state)
   const dispatch = useDispatch();
+
+  const {userData} = userDataState
   
   const [mode, setMode] = useState("");
   const { darkMode } = theme;
@@ -62,6 +64,10 @@ function AppNavBar() {
 
             <NavLink exact to="/api">
               <NavItem content="Api" />
+            </NavLink>
+
+            <NavLink to={`/${userData._id}/dashboard/profile`}>
+                <NavItem content="Dashboard"/>
             </NavLink>
 
             {!loggedIn && (

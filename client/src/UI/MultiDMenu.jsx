@@ -95,14 +95,18 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
       <div
         data-mode={mode}
         {...props}
-        onClick={() =>
-          props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
-        }
-        className="item go-back hover-filter active-filter">
-        <span role="img" aria-label="open">
-          <FontAwesomeIcon icon={["fas", "arrow-circle-left"]} />
-        </span>
-        <button>{content || "Go Back"}</button>
+        className="item go-back">
+          <button className="go-back-btn hover-filter active-filter"
+            {...props}
+            onClick={() =>
+              props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
+            }
+          >
+            <span role="img" aria-label="open">
+              <FontAwesomeIcon icon={["fas", "angle-right"]} flip="horizontal" />
+            </span>
+          </button>
+          <h4>{props.menuName}</h4>
       </div>
     );
   };
@@ -149,13 +153,12 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
             {/* Menu itself */}
             <div className="menu-skeleton">
               <Item
-                goToMenu="profile"
+                goToMenu="Profile"
                 leftIcon="😍"
                 content="Profile"
                 rightIcon={
                   <FontAwesomeIcon
-                    icon={["fas", "arrow-left"]}
-                    flip="horizontal"
+                    icon={["fas", "angle-right"]}
                   />
                 }
               />
@@ -180,22 +183,21 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
               <Item
                 rightIcon={
                   <FontAwesomeIcon
-                    icon={["fas", "arrow-left"]}
-                    flip="horizontal"
+                    icon={["fas", "angle-right"]}
                   />
                 }
-                leftIcon="😍"
+                leftIcon={<FontAwesomeIcon icon={["fas", "wrench"]}/>}
                 content="Settings"
-                goToMenu="settings"
+                goToMenu="Settings"
               />
-              <Item leftIcon={<FontAwesomeIcon className="xs-margin-left tiny-margin-right" icon={["fas", "question"]}/>} content="FAQ?" />
+              <Item leftIcon={<FontAwesomeIcon size={"xs"} className="xs-margin-left tiny-margin-right" icon={["fas", "question"]}/>} content="FAQ?" />
               <Item leftIcon="😍" content="About" />
             </div>
           </CSSTransition>
 
           {/* Second dimension {activeMenu("profile")} */}
           <CSSTransition
-            in={activeMenu === "profile"}
+            in={activeMenu === "Profile"}
             classNames="second-menu"
             timeout={500}
             unmountOnExit
@@ -203,6 +205,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
             {/* Profile menu itself */}
             <div className="menu-skeleton">
               {/* Item for going to the ProfilePage wrapped in a Link */}
+              <GoBack menuName="Profile"/>
               <Link to={`/${userData.username}/profile`}>
                 <Item
                   leftIcon={
@@ -229,8 +232,15 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                 />
               </Link>
 
-              <Item leftIcon="😍" content="Events" />
-              <Item leftIcon="😍" content="Likes" />
+              <Item leftIcon={<FontAwesomeIcon
+                    style={{
+                      fontSize: 23
+                    }}
+                    color="lightblue"
+                    icon={["fas", "thumbs-up"]}
+                    className="xs-margin-left tiny-margin-right"
+                  />} content="Likes" />
+              <Item leftIcon="😍" content="Events"/>
               <Item
                 onClick={() => logOutUser()}
                 leftIcon={
@@ -242,23 +252,22 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                 }
                 content="Log Out"
               />
-              <GoBack />
             </div>
           </CSSTransition>
 
           {/* Second Dimension {activeMenu("settings")} */}
           <CSSTransition
-            in={activeMenu === "settings"}
+            in={activeMenu === "Settings"}
             timeout={500}
             classNames="second-menu"
             unmountOnExit
             onEnter={calcHeight}>
             <div className="menu-skeleton">
+              <GoBack menuName="Settings"/>
               <Item leftIcon={"😎"} content="HTML" />
               <Item leftIcon={"😎"} content="CSS" />
               <Item leftIcon={"😎"} content="JavaScript" />
               <Item leftIcon={"😎"} content="Awesome" />
-              <GoBack />
             </div>
           </CSSTransition>
         </div>

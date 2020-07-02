@@ -7,7 +7,6 @@ const ViewProductLoader = (props) => {
 
   return(
   <ContentLoader 
-    className={props.className}
     speed={1}
     width={1280}
     height={550}

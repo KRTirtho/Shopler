@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../../libs/Tiny.utility.css";
@@ -23,6 +23,7 @@ function Product({
   getProductById,
   addToCart,
   clearSingleProductCache,
+  darkMode
 }) {
   const { params } = useRouteMatch()
 
@@ -45,7 +46,7 @@ function Product({
   return (
     <TransitionGroup>
        <CSSTransition classNames="fade-product" timeout={5000}>
-        <div className="position-absolute main-container display-flex border-rounded vertical-center">
+        <div className="position-absolute width-full display-flex border-rounded vertical-center">
           {!single_product_loading && !single_product_error ? (
             <>
               <div className="img-container">
@@ -60,17 +61,17 @@ function Product({
                 />
               </div>
               <div className="text-container">
-                <h2 className="color-darkgray">{single_product.title}</h2>
+                <h2 className={darkMode?"color-white":"color-darkgray"}>{single_product.title}</h2>
                 <h5 className="color-darkblue">{single_product.details}</h5>
                 <div className="width-full md-margin-right vertical-center md-margin-top">
-                  <p className="color-midgray">{single_product.description}</p>
+                  <p className={darkMode?"color-dimwhite":"color-midgray"}>{single_product.description}</p>
                 </div>
 
                 <div className="display-flex width-full justify-content-between md-margin-right">
 
                   <div className="display-flex flex-col">
                     
-                    <div className="display-flex flex-col container-div border-rounded">
+                    <div data-shade={darkMode&&"dark"} className="display-flex flex-col container-div border-rounded">
                       <p><span role="img" aria-label="Emojis">🌟🌟🌟🌟⭐</span><span className="tiny-margin-left font-weight-bold color-midyellow">Reviews</span></p>
                       <b className="color-darkorange text-align-center">79% Good | 21% Bad</b>
                     </div>
@@ -84,7 +85,7 @@ function Product({
                   <div className="display-flex flex-col xs-margin-right">
                     <h5 className="text-decoration-underline color-darkblue text-align-right">Uploaded by {single_product.username}
                     </h5>
-                    <p className="tiny-margin-left text-align-right">
+                    <p style={darkMode?{color:"#c3c3c3"}:{color:"black"}} className="tiny-margin-left text-align-right">
                       on: {new Date(single_product.date).toDateString()}
                     </p>
                   </div>
@@ -104,8 +105,8 @@ function Product({
 
               </div>
             </>
-          ) : single_product_loading && !single_product_error ? (
-            <ViewProductLoader className="z-index-4"/>
+          ) : single_product_loading && !single_product_error  ? (
+            <div><ViewProductLoader/></div>
           ) : single_product_error ? (
             <div>May be no internet connection or product is deleted!</div>
           ) : (
@@ -119,7 +120,8 @@ function Product({
 
 const mapStateToProps = (state) => ({
   productState: state.productState,
-  userDataState: state.userDataState
+  userDataState: state.userDataState,
+  darkMode: state.theme.darkMode
 });
 
 export default connect(mapStateToProps, {
