@@ -9,10 +9,6 @@ let imgSchema = new mongoose.Schema({
     imgSrc: String,
     description: String,
     details: String,
-    review: {
-        count: Number,
-        provider: Array
-    },
     date: {type: Date, default: Date.now()}
 })
 
