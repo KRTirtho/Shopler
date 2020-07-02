@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./dashboard.static.style.css/SideBar.css";
 import { Link, useRouteMatch } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from "../../../../fontawesome";
-import { useSelector } from "react-redux";
 
 /**
  *! @Caution Here I'm using the same CSSTransition Classnames of <MultiDMenu/> for less code timesaving....
@@ -13,17 +12,6 @@ import { useSelector } from "react-redux";
 function SideBar() {
   //Active Menu State
   const [activeMenu, setActiveMenu] = useState("Main");
-
-  //Redux State
-  const {darkMode} = useSelector(state => state.theme)
-
-  //DarkMode state
-  const [mode, setMode] = useState("")
-
-  useEffect(()=>{
-    if(darkMode)setMode("dark");
-    else if(!darkMode)setMode("");
-  }, [darkMode])
 
   //Router Url for matching
   const {url} = useRouteMatch();
@@ -54,7 +42,7 @@ function SideBar() {
   };
 
   return (
-    <div data-mode={mode} className="sidebar-skeleton">
+    <div className="sidebar-skeleton">
       {/* Routing Component */}
       <div className="route-history-skeleton">
         <FontAwesomeIcon
@@ -83,7 +71,7 @@ function SideBar() {
         <div className="route-link-skeleton">
           <RouteLink to={`${url}/profile`}>
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "user"]}
             />
@@ -91,7 +79,7 @@ function SideBar() {
           </RouteLink>
           <RouteLink to={`${url}/cart`}>
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "shopping-cart"]}
             />
@@ -99,13 +87,13 @@ function SideBar() {
           </RouteLink>
           <MenuLink to="History">
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "history"]}
             />
             History
             <span className="menu-link-right tiny-margin-right">
-              <FontAwesomeIcon color={darkMode?"white":"black"} icon={["fas", "angle-right"]} />
+              <FontAwesomeIcon color="black" icon={["fas", "angle-right"]} />
             </span>
           </MenuLink>
         </div>
@@ -121,7 +109,7 @@ function SideBar() {
           <GoBack>Back</GoBack>
           <RouteLink to={`${url}/comment`}>
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "comment"]}
             />
@@ -129,7 +117,7 @@ function SideBar() {
           </RouteLink>
           <RouteLink to={`${url}/affection`}>
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "heart"]}
             />
@@ -137,7 +125,7 @@ function SideBar() {
           </RouteLink>
           <RouteLink to={`${url}/checkout`}>
             <FontAwesomeIcon
-              color={darkMode?"white":"black"}
+              color="black"
               className="tiny-margin-right"
               icon={["fas", "vote-yea"]}
             />
