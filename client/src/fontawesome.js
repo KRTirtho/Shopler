@@ -54,8 +54,7 @@ export default library.add({
   faEye,
   faArrowCircleLeft,
   faArrowLeft,
-  faGithub,
-  faAngleRight
+  faGithub
 });
 
 /**

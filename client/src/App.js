@@ -16,7 +16,6 @@ import Api from "./Pages/Api";
 import {checkAuthorized} from "./Features/actions/userActions";
 import ProductEdit from "./components/Layout/Profile Page/ProductEdit";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import DashBoard from "./components/Customer/DashBoard/DashBoard";
 
 const App = () => {
   const {userDataState, theme} = useSelector((state=>state))
@@ -92,15 +91,10 @@ const App = () => {
                     </Route>
                   )}
                   {loggedIn && (
-                    <Route exact path="/:userId/profile/product/:productId">
+                    <Route path="/:userId/profile/product/:productId">
                       <ProductEdit />
                     </Route>
                   )}
-                  {loggedIn &&
-                    <Route path="/:userId/dashboard">
-                       <DashBoard/>
-                    </Route>
-                  }
                   <Route path="*">
                     <div className="vertical-center-strict top-20">
                       <h1 className="text-align-center">404</h1>

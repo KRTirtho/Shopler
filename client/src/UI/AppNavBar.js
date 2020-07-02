@@ -13,10 +13,12 @@ import MultiDMenu from "./MultiDMenu";
 function AppNavBar() {
   const {userDataState, theme} = useSelector(state=>state)
   const dispatch = useDispatch();
+
+  const {userData} = userDataState
   
   const [mode, setMode] = useState("");
   const { darkMode } = theme;
-  const { loggedIn, userData } = userDataState;
+  const { loggedIn } = userDataState;
 
   useEffect(() => {
     if (darkMode) setMode("dark");
