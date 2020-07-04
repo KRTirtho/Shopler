@@ -90,16 +90,14 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
 
   // Special type of Item with extra goBack functionality
   const GoBack = (props) => {
-    const { content } = props;
+    const { content, goto } = props;
     return (
       <div
         data-mode={mode}
-        {...props}
         className="item go-back">
           <button className="go-back-btn hover-filter active-filter"
-            {...props}
             onClick={() =>
-              props.goto ? setActiveMenu(props.goto) : setActiveMenu("main")
+              goto ? setActiveMenu(goto) : setActiveMenu("main")
             }
           >
             <span role="img" aria-label="open">

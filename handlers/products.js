@@ -1,8 +1,13 @@
 const mongoose = require("mongoose");
 const Image = require("../models/Image");
 const fs = require("fs");
+const cloudinary = require("cloudinary").v2
 
 //*Product Handling---------------------------------------------------
+/**
+ * @query page
+ * @res <product>
+  */
 exports.getProducts = (req, res) => {
   const getAll = (page = 1) => {
     const PAGE_SIZE = 20;
@@ -19,6 +24,10 @@ exports.getProducts = (req, res) => {
   return getAll(req.query.page);
 };
 
+/**
+ * @params productId
+ * @res <product> 
+  */
 exports.getProductById = (req, res) => {
   if (req.params.productId)
     Image.findById(req.params.productId).exec((err, data) => {
@@ -32,13 +41,17 @@ exports.getProductById = (req, res) => {
   }
 };
 
+/**
+ * @query sort, userId
+ * @res <product>
+  */
 exports.getProductByUserId = async (req, res) => {
   try {
     if (req.query.userId && req.isAuthenticated()) {
       const sort = req.query.sort;
       const availableProduct = await Image.find({
         userId: req.query.userId,
-      })
+      }).select("-imgId")
         .sort(
           sort && sort === "a-z"
             ? { title: "asc" }
@@ -68,6 +81,10 @@ exports.getProductByUserId = async (req, res) => {
   }
 };
 
+/**
+ * @query product (title)
+ * @res <product>
+  */
 //!Experimental Search Products---------------------------------------------------------
 exports.searchProducts = async (req, res) => {
   if (req.query.product) {
@@ -111,37 +128,52 @@ exports.searchProducts = async (req, res) => {
 };
 //!-------------------------------------------------------------------------------------
 
+/**
+ * @body multipart/form-data as imgSrc , { title, details, description}
+ * @user {_id, username}
+ * @res Flash
+  */
+
 exports.postProduct = (req, res) => {
-  let newProduct = new Image({
-    userId: req.body.userId,
-    username: req.body.username,
+  if (req.isAuthenticated()){
+    let newProduct = new Image({
+    userId: req.user._id, //?
+    username: req.user.username, //?
     title: req.body.title,
-    imgSrc: "/api/image/" + req.file.filename,
     details: req.body.details,
     description: req.body.description,
+    imgId: req.file.filename,
+    imgSrc: req.file.path,
   });
-  if (req.isAuthenticated())
-    newProduct.save((err, data) => {
+   return newProduct.save((err, data) => {
       if (err) res.status(500).json("Failed to save product");
       res.status(200).json("Uploading " + req.body.title + "is Successful!!");
     });
+  }
   else {
     return res.status(401).json({ Error: "Unauthorized. Access denied!" });
   }
 };
 
+/**
+ * @body {_id (product), imgName}
+ * @res Flash
+  */
 exports.deleteProduct = (req, res) => {
   if (req.body && req.isAuthenticated()) {
     return Image.findOneAndDelete({ _id: req.body._id }).exec((err, data) => {
       if (err) res.status(501).json("Product can't be deleted");
       if (req.body.imgName && req.body.imgName.length > 0 && req.body.imgName!==undefined||null) {
-        fs.unlink(
-          "./FileStorage/productImage/" + req.body.imgName.split("/")[3],
-          (err) => {
-            if (err) res.status(500).json({ Error: "Failed to delete image!" });
-            res.status(203).json(data + " is deleted!");
-          }
-        );
+        // Deleting product image after deleting product
+        cloudinary.uploader.destroy(data.imgId)
+          .then(deletedImage=>{
+            if(deletedImage.result==="not found")res.status(500).json({Error: "Failed to delete product Image"})
+            return res.status(200).json({Success: "Product "+ data._id +" is delete"})
+          })
+          .catch(err=>{
+            console.log("Product Delete Error: ", err)
+            return res.status(500).json({Error: "Unknown error occurred"})
+          })
       }
       else if(!req.body.imgName)res.status(400).json({Error: "No image id but product deleted"})
     });
@@ -153,9 +185,13 @@ exports.deleteProduct = (req, res) => {
 };
 //*----------------------------------------------------------------------
 
+/**
+ * @params  {userId, productId}
+ * @res product{"-_id, -imgId"}
+  */
 exports.getProductEdit = (req, res)=>{
   if(req.params.userId && req.params.productId && req.isAuthenticated()){
-    return Image.findOne({ userId: req.params.userId, _id:req.params.productId}).exec((err, product)=>{
+    return Image.findOne({ userId: req.params.userId, _id:req.params.productId}).select("-_id -imgId").exec((err, product)=>{
       if(err) res.status(500).json({Error: "Failed to find the product"});
       else if(!product || product.length===0)res.status(404).json({Error: "Failed to find any product with that id"});
       else{
@@ -168,6 +204,10 @@ exports.getProductEdit = (req, res)=>{
   }
 } 
 
+/**
+ * @body {_id (product), userId, title, details, description}
+ * @res Flash
+  */
 exports.updateProductEdited = (req, res)=>{
   if(req.body && req.isAuthenticated()){
     
@@ -192,31 +232,42 @@ exports.updateProductEdited = (req, res)=>{
 
 }
 
+/**
+  * @body multipart/form-data as imgSrc
+  * @res Flash
+  * @file {path, filename (public_id)}
+  * @user _id
+  */
+
 exports.updateProductEditedImage = (req, res)=>{
-  if(req.body && req.isAuthenticated() && req.file && req.file.filename){
-    
-    return Image.findOneAndUpdate({_id: req.body._id, userId: req.body.userId}, {imgSrc: `/api/image/${req.file.filename}`}).exec((err, success)=>{
-      
-      if(err)res.status(500).json({Error: "Failed to update product details!"})
-      
-      else if(!success || success.length===0)res.status(404).json({Error: "Product not found!"})
-      
-      else{
-        fs.unlink(
-          "./FileStorage/productImage/" + req.body.prevImgSrc.split("/")[3],
-          (err) => {
-            if (err) res.status(500).json({ Error: "Failed to delete image!" });
-            else{
-              return res.status(200).json({Success: "Updated product image!"})
-            }
+if(req.isAuthenticated()){
+  //Getting the image name/public_id
+Image.findOne({_id: req.body._id, userId: req.user._id}).exec()
+    .then(product=>{
+      if(!product || product.length===0)res.status(404).json({Error: "No product found"})
+      //Deleting the product Image from 
+      cloudinary.uploader.destroy(product.imgId)
+      .then(({result})=>{
+        console.log(result)
+        if(result==="not found")res.status(404).json({Error: "Failed to delete product"})
+        //now doing all the database stuff
+        return Image.findOneAndUpdate({_id: product._id, userId: product.userId},
+           {imgSrc: req.file.path, imgId: req.file.filename})
+           .exec((err, success)=>{
+          if(err){
+            console.log("Product Image Update Error: ", err)
+            return res.status(500).json({Error: "Failed to update product details!"})
           }
-        );
-      }
-
+          else if(!success || success.length===0)res.status(404).json({Error: "Product not found!"})
+          return res.status(200).json({Success: "Product Updated"})
+        })
+      })
     })
-
-  }
-
+.catch(err=>{
+  console.log("Product Image Update Error: ", err)
+  return res.status(500).json({Error: "Unknown error occurred"})
+})
+}
   else {
     res.status(400).json({Error: "Unauthorized or condition not fulfilled"})
   }

@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const mongoose = require("mongoose");
-const fs = require("fs")
+const fs = require("fs");
+const { success } = require("../passport/LocalStrategy");
+const cloudinary = require("cloudinary").v2
+const userImageUpload = require("../Multer/userImage")
 
 //! Api End point test-----
 exports.getUsers = (req, res) => {
@@ -23,6 +26,8 @@ exports.signupUser = async (req, res) => {
     country: req.body.country,
     zipCode: req.body.zipCode,
     region: req.body.region,
+    imgSrc: null,
+    imgId: null
   });
   if (req.body.newUserEmail && req.body.username) {
     const availableUser = User.find(
@@ -179,25 +184,72 @@ exports.updateUserInfo = async (req, res) => {
  * @res {Flash}
   */
 exports.updateUserImage = async (req, res) => {
-  if (req.isAuthenticated() || !req.isAuthenticated()) {
+  console.log(req.file)
     try {
+      // If user image already not available then we're saving or updating it
       const findUserAndUpdateImage = await User.findByIdAndUpdate(
-        req.body.userId,
-        { imgSrc: "/api/user/image/"+req.file.filename },
+        req.user._id,
+        // If not in production then we save the folder url else Cloudinary
+        { imgSrc: req.file.path, imgId: req.file.filename },
         (err, success) => {
           if (err)
-            res.status(500).json({ Error: "Failed update profile picture" });
+            return res.status(500).json({ Error: "Failed update profile picture" });
           else if (!success || success.length === 0)res.status(404).json({ Error: "No user exists with the provided id!" });
-          fs.unlink("./FileStorage/userImage/" + req.body.prevImgSrc, (err) => {
-            res.status(200).json({ Success: "Updated user" });
-          });
+            return res.status(200).json({ Success: "Updated user" });
         }
-      );
-      return findUserAndUpdateImage
-    } catch (err) {
-      res.status(403).json({ Error: "Failed to find the user!" });
-    }
-  } else {
-    res.status(401).json({ Error: "Unauthorized!" });
+        );
+        return findUserAndUpdateImage
+      }
+      catch (err) {
+        console.log("USER Image Upload Error: ", err)
+        res.status(403).json({ Error: "Unknown error occurred!" });
+      } 
+    };
+
+    /**
+     * @type Middleware
+     * @returns next()
+     * @body : @type : multipart/form-data as imgSrc
+     * @user _id
+     */
+    //Flow: notAvailable? -> next(null, user) -> uploadUserImage.single("imgSrc") -> save To DB
+    //Flow!: available? -> cloudinary.uploader.destroy(...).then(...) -> next(null, deletedImage) -> update to DB 
+exports.checkImageAvailable = (req, res, next)=>{
+  if(req.isAuthenticated()){
+     User.findById(req.user._id).exec()
+    .then(user=>{
+      //Image of the user already exists then we delete the image
+      // console.log(user)
+      if(user && user.imgSrc && user.imgId){
+        // If available already then just delete it 
+        cloudinary.uploader.destroy(user.imgId, {invalidate: true})
+        .then(deletedImage=>{
+              // Deleted img is not available then error
+              console.log(deletedImage)
+        if(deletedImage.result==='not found')res.status(500).json({Error: "Failed to upload"})
+              //if available then return next with deletedImage 
+              return next(null, deletedImage)
+            })
+            .catch(err=>{
+              console.error("Image Upload Error: ", err)
+              return res.status(500).json({Error: "Unknown error occurred"})        
+            })
+          }
+        // if not available then just calling the next middleware function 
+        //And the work will be done afterwards by the callback function
+        else if(user && !user.imgId && !user.imgSrc)next(null, user)
+    })
+    .catch(err=>{
+      console.error("Image Upload Error: ", err)
+      return res.status(500).json({Error: "Unknown error occurred"})
+    })
   }
-};
+
+  else {
+    res.status(401).json({Error: "Unauthorized, forbidden"})
+  }
+}
+
+exports.testImageUpload = (req, res)=>{
+  res.json(req.file)
+}

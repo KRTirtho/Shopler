@@ -2,23 +2,22 @@ const express = require('express')
 const productHandlers = require("../handlers/products")
 const authHandlers = require("../handlers/auth")
 const router = express.Router()
-const User = require("../models/User")
 const passport = require("../passport/index")
 const upload = require("../Multer/productImage")
 const uploadUserImage = require("../Multer/userImage")
 const reviewHandler = require("../handlers/review")
-// const AWS = require('../Multer/productImageIBMCS')
-
+const cartHandler = require("../handlers/cart") 
+const { NODE_ENV } = require("../config")
 
 //!For testing EndPoint----------------------------------
-if(process.env.NODE_ENV==="development"){
+if(NODE_ENV==="development"){
     router.get("/users", authHandlers.getUsers)
     }
 
 //% For User Info in profile page
 router.get("/users/:userId", authHandlers.getUserInfo)
 router.post("/users/", authHandlers.updateUserInfo)
-router.post("/users/image", uploadUserImage.single("imgSrc"), authHandlers.updateUserImage)
+router.post("/users/image", authHandlers.checkImageAvailable, uploadUserImage.single("imgSrc"), authHandlers.updateUserImage)
 //*Authentication Handling-----------------------------------------------------
 
 router.post("/user/signup", authHandlers.isAvailableUsername, authHandlers.signupUser)
@@ -46,14 +45,7 @@ router.post("/product", upload.single("productImg"), productHandlers.postProduct
 
 router.delete("/product-delete", productHandlers.deleteProduct)
 
-//??? Uploading & Getting files to AWS + IBM CLOUD STORAGE
-// router.get("/aws/product/image", AWS.getProductImage);
-// router.post("/aws/product/image", AWS.upload.array('img-file', 1), (req, res, next)=>{
-//     res.json(req.files[0]);
-// })
-
-//%Update Product
-
+//%Update Edit Product
 router.get("/product/:userId/:productId", productHandlers.getProductEdit)
 
 router.patch("/product/update",  productHandlers.updateProductEdited)
@@ -62,5 +54,13 @@ router.patch("/product/update/image", upload.single("imgSrc"), productHandlers.u
 
 //% Product Review 
 router.post("/product/review", reviewHandler.addAffection)
+
+//% Cart 
+router.get("/user/cart", cartHandler.getCartProduct)
+router.post("/user/cart/add", cartHandler.addProduct)
+router.delete("/user/cart/delete", cartHandler.removeProduct)
+
+//! Cloudinary image upload test 
+router.post("/cloudinary/test",  uploadUserImage.single("img"),authHandlers.testImageUpload)
 
 module.exports = router;

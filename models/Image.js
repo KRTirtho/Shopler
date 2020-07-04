@@ -7,6 +7,7 @@ let imgSchema = new mongoose.Schema({
     username: String,
     title: String,
     imgSrc: String,
+    imgId: String,
     description: String,
     details: String,
     review: {

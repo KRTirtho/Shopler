@@ -1,11 +1,12 @@
 const User = require("../models/User");
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require("../config")
 
 const GithubStrategy = require("passport-github").Strategy;
 
 //! Only for development don't push origin to Github
 const strategy = new GithubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID || "IN DEVELOPMENT",
-    clientSecret: process.env.GITHUB_CLIENT_SECRET || "IN DEVELOPMENT",
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
     callbackURL: "http://localhost:4000/api/auth/github/callback"
 }, function(accessToken, refreshToken, profile, cb) {
     const newUser = new User({
