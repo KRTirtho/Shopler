@@ -4,6 +4,7 @@ module.exports = {
     MONGO_URI: process.env.MONGO_URI,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GITHUB_CALLBACK: process.env.GITHUB_CALLBACK,
     SESSION_SECRET: process.env.SESSION_SECRET,
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,

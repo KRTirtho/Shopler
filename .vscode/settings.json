@@ -11,6 +11,7 @@
         "midgray",
         "originalname",
         "postbuild",
-        "uploader"
+        "uploader",
+        "upsert"
     ]
 }

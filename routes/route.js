@@ -23,10 +23,11 @@ router.post("/users/image", authHandlers.checkImageAvailable, uploadUserImage.si
 router.post("/user/signup", authHandlers.isAvailableUsername, authHandlers.signupUser)
 
 //%Github OAuth Authentication
+
+router.get("/auth/github/", passport.authenticate('github')) 
+router.get("/auth/github/callback/", passport.authenticate("github", {failureRedirect: "/login", failureMessage: "Error getting signed with OAuth Github", successRedirect: "/"}))
 router.post("/user/login",
  passport.authenticate('local', {failureRedirect: "/", failureMessage: "Error username or password incorrect"}), authHandlers.getLoggedIn);
-
-router.get("/auth/github/callback/", passport.authenticate("github", {failureRedirect: "/", failureMessage: "Error getting signed with OAuth Github"}))
 
 router.get("/user/logout", authHandlers.logOut)
 

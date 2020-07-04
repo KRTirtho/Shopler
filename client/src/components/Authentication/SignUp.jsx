@@ -321,7 +321,7 @@ function SignUp({
                 </div>
 
                 <div data-shade={mode} className="social-btn hover-filter active-filter">
-                  <a href="/api/auth/github/callback">
+                  <a href="/api/auth/github/">
                     Sign in with Github{" "}
                   </a>
                   <div className="github">

@@ -17,7 +17,7 @@ let userSchema = new mongoose.Schema({
 	imgSrc: {type: String, required: false},
 	imgId: {type: String, required: false},
 	type: { type: String },
-	githubId: { type: Number },
+	githubId: { type: String },
 	googleId: Number,
 	reviewed: [
 		{
