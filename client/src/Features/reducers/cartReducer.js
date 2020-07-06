@@ -1,62 +1,65 @@
 import {
-  ADD_TO_CART,
-  REMOVE_FROM_CART,
   CLEAR_CART,
   MARK_ALL_READ,
+  ADDED_TO_CART,
+  REMOVED_FROM_CART,
+  GOT_ALL_CART,
+  LOADING_CART,
+  ERROR_CART
 } from "../actions/cartActions";
 
 const initialState = {
   products: [],
-  count: 0,
+  firstTime: true,
+  error: false,
+  loading: false,
   notification: 0,
 };
 
 const cartReducer = (state = initialState, action) => {
    switch (action.type) {
-    case ADD_TO_CART:
-      const existingItem = state.products.find(
-        (product) => product._id === action.payload._id
-      );
-      if (existingItem && existingItem.length !== 0) {
-        existingItem.quantity = existingItem.quantity + 1;
+    case GOT_ALL_CART:
+      return{
+        ...state,
+        products: action.payload,
+        firstTime: true,
+        loading: false,
+        error: false
+      } 
+    case LOADING_CART: 
+    return {
+      ...state,
+          loading: true,
+          firstTime: true,
+          error: false
+        }
+        case ERROR_CART:
+      return {
+        ...state,
+        error: true,
+        firstTime: true,
+         loading: false 
+        }
+    case ADDED_TO_CART:
+       return {
+         ...state,
+         notification: state.notification + 1,
+         firstTime: false,
+         loading: false,
+         error: false
+        }
+        case REMOVED_FROM_CART: 
         return {
           ...state,
-          count: state.count + 1,
-        };
-      } else {
-        return {
-          ...state,
-          products: state.products.concat({ ...action.payload, quantity: 1 }),
-          count: state.count + 1,
-          notification: state.notification + 1,
-        };
-      }
-    case REMOVE_FROM_CART:
-      const existingItemToDelete = state.products.find(
-        (product) => product._id === action.payload
-      );
-
-      if (existingItemToDelete.quantity > 1) {
-        existingItemToDelete.quantity = existingItemToDelete.quantity - 1;
-        return {
-          ...state,
-          count: state.count > 0 ? state.count - 1 : 0,
-        };
-      } else {
-        return {
-          ...state,
-          products: state.products.filter(
-            (product) => product._id !== action.payload
-          ),
-          count: state.count >= 0 ? state.count - 1 : 0,
-          notification : state.notification >= 0? state.notification - 1 : 0
-        };
-      }
+          firstTime: false,
+          notification: state.notification>0?state.notification-1:0,
+          loading: false,
+          error: false
+       }
     case CLEAR_CART:
       return {
         ...state,
         products: [],
-        count: 0,
         notification: 0
       };
     case MARK_ALL_READ:

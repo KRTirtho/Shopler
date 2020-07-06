@@ -186,7 +186,7 @@ const Upload = ({ userDataState, theme }) => {
                 className="input-custom tiny-margin-bottom hover-filter"
                 onChange={handleInputState}
                 id="image"
-                accept="image"
+                accept="image/png, image/jpeg"
                 ref={fileInput}
                 required
               />

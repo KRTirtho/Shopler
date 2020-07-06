@@ -53,8 +53,7 @@
     border-bottom: none !important;
 }
 .controller-container{
-    position: absolute;
-    right: 10%;
+    margin-left: auto;
 }
 .controller-container button{
     background-color: #ffbe68;

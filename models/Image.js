@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 
-
 let imgSchema = new mongoose.Schema({
     userId: String,
     username: String,
@@ -10,10 +9,9 @@ let imgSchema = new mongoose.Schema({
     imgId: String,
     description: String,
     details: String,
-    review: {
-        count: Number,
-        provider: Array
-    },
+    review: [
+        {provider: mongoose.SchemaTypes.ObjectId, _id: false}
+    ],
     date: {type: Date, default: Date.now()}
 })
 

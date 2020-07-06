@@ -2,7 +2,7 @@ import { useState } from "react";
 
 /**
  * @version 0.0.1
- * @returns  [request : function,data : object, loading : boolean, error : boolean] 
+ * @returns [request : function,data : object, loading : boolean, error : boolean] 
  * @request > @param url: URL, signal: boolean
  * @summary This is a product for good uses only the author of this library
  will not occupy for any sort of illegal circumstances. The user will be responsible for their 
@@ -21,7 +21,7 @@ export default function useFetchGet() {
  * @loading for loaders
  * @error for error handling
  */
-const fetchGET = (url, signal) => {
+const request = (url, signal) => {
   if (!url)
     console.error(
       "No url argument passed-in in useFetchGet. Pass an url as argument for fetching data from that URL"
@@ -53,7 +53,7 @@ const fetchGET = (url, signal) => {
       });
   };
 
-  return [fetchGET, data, loading, error] ;
+  return [request, data, loading, error] ;
 }
 
 /**

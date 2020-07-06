@@ -30,7 +30,7 @@ export const CustomerProfilePage = () => {
                 {/* Image Uploading button */}
                 <label onClick={e=>setUserImgEdit(true)} className="customer-image-edit-btn hover-filter active-filter">
                     <FontAwesomeIcon icon={["fas", "camera"]}/>
-                    <input onChange={e=>setUserImgPrev(e.target.files[0])} accept="image/jpeg" type="file" name="" id=""/>
+                    <input onChange={e=>setUserImgPrev(e.target.files[0])} accept="image/jpeg, image/png" type="file" name="" id=""/>
                 </label>
             </div>
 

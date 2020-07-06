@@ -1,48 +1,53 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
-const useAffection = (productId) => {
-  const { userData } = useSelector((state) => state.userDataState);
+/**
+ * @returns [affection: Boolean, controlAffection: func]
+ * @function controlAffection 
+ * @params {productId: String, providerId: String, type: <URL_Params>:String /add{1}?remove{1}?/} 
+ * @author KR.Tirtho
+ * @copyright MIT 2020
+  */
 
-  const [affectionate, setAffectionate] = useState(false);
+const useAffection = () => {
+  const [affection, setAffection] = useState('');
 
 
-  useEffect(() => {
-    const found = ()=>userData.reviewed?.map((review) => {
-      if (review.productId === productId) {
-        setAffectionate(true);
-      }
-    });
-    found()
-  }, [affectionate, userData.reviewed, productId]);
+  const controlAffection = ({ productId, providerId, type }) => {
 
-  const postAffection = payload => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     const options = {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
-          providerId: payload,
-          productId: productId
+        providerId: providerId,
+        productId: productId,
       }),
       redirect: "follow",
     };
 
-    return fetch("/api/product/review/", options)
+    const URL = `/api/product/review?${
+      type === "add" ? "add=true" : "remove=true"
+    }`;
+
+    return fetch(URL, options)
       .then((res) => {
         if (res.ok) {
-          setAffectionate(true);
-        } else if (!res.ok) {
-          setAffectionate(false);
+          return res.json();
+        }
+      })
+      .then((json) => {
+        if (json.affection === true) {
+          setAffection(true);
+        } else if (json.affection === false) {
+          setAffection(false);
         }
       })
       .catch((err) => {
-        setAffectionate(false);
+        console.error("Failed to connect to: ", URL);
       });
   };
-
-  return [affectionate, postAffection]
+  return [affection, controlAffection]
 };
 
-export default useAffection
+export default useAffection;

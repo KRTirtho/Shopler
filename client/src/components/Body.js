@@ -14,13 +14,13 @@ import "./css/Body.css";
 import ProductLoader from "../Loaders/ProductLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 // eslint-disable-next-line
-import { addToCart } from "../Features/actions/cartActions";
+import { cartAddOrRemove } from "../Features/actions/cartActions";
 import ProductCard from "../UI/ProductCard"
 
 const Body = React.memo(
   ({
     getProducts,
-    addToCart,
+    cartAddOrRemove,
     setPaginating,
     productState,
     theme
@@ -45,11 +45,10 @@ const Body = React.memo(
      * TODO: Cart Functions for adding to cart
       */
      const concatToCart = (payload)=>{
-        addToCart(payload)
+        cartAddOrRemove({type: 'add', productId: payload})
      } 
 
     /**
-     * @Observers_Infinite_Scroll
      * @fetching data through useEffect
      */
 
@@ -62,13 +61,13 @@ const Body = React.memo(
 
       getProducts(skip, signal);
       document.addEventListener("scroll", () => setPagination(true));
-      if (pagination) setPaginating(true);
+      if (pagination===true) setPaginating(true);
       //% If the {ignore} is true then the component is un-mounting 
-      if(ignore)abortController.abort()
-      if(darkMode){
+      if(ignore===true)abortController.abort()
+      if(darkMode===true){
         setMode("dark")
       }
-      else if(!darkMode){
+      if(darkMode===false){
         setMode("")
       }
       return () => {
@@ -114,7 +113,7 @@ const Body = React.memo(
                   title={d.title}
                   details={d.details}
                   description={d.description}
-                  addToCart={()=>concatToCart(d)}
+                  addToCart={()=>concatToCart(d._id)}
                   />
               </LazyLoad>)
             })
@@ -159,7 +158,7 @@ const ReduxState = connect(mapStateToProps, {
   getProducts,
   clearProductCache,
   setPaginating,
-  addToCart,
+  cartAddOrRemove,
 })(Body);
 
 export default ReduxState;

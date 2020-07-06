@@ -491,6 +491,7 @@ function UserInfo({ userId, loggedIn, mode }) {
                 name="imgSrc"
                 className="display-none"
                 id="userImg"
+                accept="image/png, image/jpeg"
               />
               {imgEditState && (
                 <>

@@ -1,40 +1,39 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./customer.style.css/Cart.css";
 import { CSSTransition } from "react-transition-group";
 import {
-  addToCart,
-  removeFromCart,
+  cartAddOrRemove,
   clearCart,
   markAllRead,
+  getCart
 } from "../../Features/actions/cartActions";
 import useOnClickOutSide from "../../Hooks/useOnClickOutSide";
 
 
-const Cart = ({
+const Cart = memo(({
   theme,
   cartState,
+  cartAddOrRemove,
   clearCart,
-  addToCart,
-  removeFromCart,
-  markAllRead
+  markAllRead,
+  getCart
 }) => {
   const cartRef = useRef();
-  const { products, count, notification } = cartState;
+  const { products, notification, loading, error, firstTime } = cartState;
   const [open, setOpen] = useState(false);
   const {darkMode} = theme
   const [mode, setMode] = useState("")
-  /*
-    ? Place for API Calls
-  */
-
 
   useOnClickOutSide(["mousedown", "scroll", "touchstart"], cartRef, ()=>setOpen(false))
 
   useEffect(()=>{
     if(darkMode)setMode("dark")
     else if(!darkMode)setMode("")
+    if(products.length===0|| !firstTime){
+      getCart()
+    }
   }, [darkMode])
 
   const toggleCart = (e) => {
@@ -73,18 +72,19 @@ const Cart = ({
           {/* mark all read button */}
           {notification>0&&<button onClick={markAllRead} className="btn btn-block btn-secondary tiny-margin-bottom">Mark as all read</button>}
 
-          <h6>Total: {count}</h6>
+          <h6>Total: {products?.length}</h6>
+
 
           <div className="product-skeleton">
             {products.length === 0 &&
               "You haven't yet added anything to cart 😊. Try adding something right now!"}
-            {products.map((product, index) => (
+            {products?.map((product, index) => (
               <CartProduct
                 key={(index % Math.random()) / Date.now()}
                 title={product.title}
                 imgSrc={product.imgSrc}
-                add={()=>addToCart(product)}
-                remove={() => removeFromCart(product._id)}
+                add={()=>cartAddOrRemove({type: "add", productId: product._id})}
+                remove={() => cartAddOrRemove({type: "remove", productId: product._id})}
                 quantity={product.quantity?product.quantity : 1}
               />
             ))}
@@ -102,19 +102,19 @@ const Cart = ({
       </CSSTransition>
     </section>
   );
-};
+})
 
 const mapStateToProps = (state) => ({
   cartState: state.cartState,
   theme: state.theme
 });
 
-export default connect(mapStateToProps, { addToCart ,clearCart, removeFromCart, markAllRead })(Cart);
+export default connect(mapStateToProps, {getCart, cartAddOrRemove ,clearCart, markAllRead })(Cart);
 
 const CartProduct = (props) => {
   return (
     <div className="product-skeleton display-flex tiny-padding-bottom tiny-padding-top tiny-margin-left border-black border-bottom">
-      <div className="display-flex align-items-center">
+      <div className="display-flex align-items-center tiny-margin-right">
         <img
           className="img-sm border-circle hover-filter"
           src={props.imgSrc}
@@ -124,16 +124,16 @@ const CartProduct = (props) => {
       </div>
 
       <div className="controller-container tiny-margin-left display-flex align-items-center">
-        <button onClick={props.add} className="hover-filter active-scale">
-          +{/* Add to cart quantity */}
-        </button>
-        <span className="tiny-padding">
-          {props.quantity} {/* number of quantity */}
+        {/* <button onClick={props.add} className="hover-filter active-scale">
+          +
+        </button> */}
+        <span className="tiny-padding display-flex align-items-center border-rounded">
           <FontAwesomeIcon icon={["fas", "shopping-cart"]} />
+          {props.quantity} 
         </span>
-        <button onClick={props.remove} className="hover-filter active-scale">
-          -{/* Remove from cart quantity */}
-        </button>
+        {/* <button onClick={props.remove} className="hover-filter active-scale">
+          -
+        </button> */}
       </div>
     </div>
   );

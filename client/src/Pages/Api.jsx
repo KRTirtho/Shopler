@@ -80,7 +80,7 @@ toggleBtn.addEventListener("click", toggleDarkMode)`}
 
 const toggleDarkMode=(e)=>{
 container.forEach(DMC=>{
-    if(!d.getAttribute("data-shade")){   /* Checking if data-shade is present or not*/
+    if(!DMC.getAttribute("data-shade")){   /* Checking if data-shade is present or not*/
     DMC.setAttribute("data-shade", "dark")  /* applying & creating data-shade="dark" */
     }
     else if(d.getAttribute("data-shade")==="light"){ /* Checking  if it's default to "light" or not*/

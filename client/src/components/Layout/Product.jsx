@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../../libs/Tiny.utility.css";
@@ -14,16 +14,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 // eslint-disable-next-line
 import library from "../../fontawesome"
 import { useRouteMatch } from "react-router-dom";
-import { addToCart } from "../../Features/actions/cartActions"
+import { cartAddOrRemove } from "../../Features/actions/cartActions"
 import useAffection from "../../Hooks/useAffection";
 
 function Product({
   userDataState,
   productState,
   getProductById,
-  addToCart,
   clearSingleProductCache,
-  darkMode
+  darkMode,
+  cartAddOrRemove
 }) {
   const { params } = useRouteMatch()
 
@@ -35,13 +35,28 @@ function Product({
 
   const {userData} = userDataState;
 
-  const [affectionate, postAffection] = useAffection(single_product._id)
+  const [affectionate, setAffectionate] = useState(false)
+
+
+  const [affection, controlAffection] = useAffection()
 
   useEffect(() => {
     getProductById(params.productId);
+    const found = ()=>userData.review?.map((review) => {
+      if (review.productId === params?.productId) {
+        setAffectionate(true);
+      }
+    });
+    found()
+    if(affection){
+      setAffectionate(true)
+    }
+    else if(affection===false){
+      setAffectionate(false)
+    }
     return () => clearSingleProductCache();
     // eslint-disable-next-line
-  }, [params.productId, userData.reviewed]);
+  }, [affectionate, affection, params.productId, userData.review]);
   
   return (
     <TransitionGroup>
@@ -99,8 +114,15 @@ function Product({
                 </div>
 
                   <div className="display-flex lg-margin-top">
-                    <button onClick={()=>addToCart(single_product)} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
-                    <button onClick={()=>postAffection(userData._id)} className="btn bg-color-middarkgray border-radius-top-left-0 border-radius-bottom-left-0 xs-margin-left"><FontAwesomeIcon color={affectionate?"#F13737": "#554"} icon={["fas", "heart"]}/></button>
+                    <button onClick={()=>cartAddOrRemove({type: "add", productId: single_product._id})} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
+                    <button onClick={()=>{
+                      if(!affectionate){
+                        controlAffection({providerId: userData._id, productId: single_product._id, type: "add"})
+                      }
+                      else if(affectionate){
+                        controlAffection({providerId: userData._id,  productId: single_product._id, type: "remove"})
+                      }
+                      }} className="btn bg-color-middarkgray border-radius-top-left-0 border-radius-bottom-left-0 xs-margin-left"><FontAwesomeIcon color={affectionate?"#F13737": "#554"} icon={["fas", "heart"]}/></button>
                   </div>
 
               </div>
@@ -126,6 +148,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getProductById,
-  addToCart,
+  cartAddOrRemove,
   clearSingleProductCache,
 })(Product);

@@ -69,7 +69,7 @@ exports.isAvailableUsername = async (req, res, next) => {
 //*Authorization Checking Route handler
 exports.isAuthorized = (req, res) => {
   if (req.isAuthenticated()) {
-    const userInfo = User.findById(req.user._id).select("username email imgSrc reviewed commented").exec((err, user) => {
+    const userInfo = User.findById(req.user._id).select("username email imgSrc review comment").exec((err, user) => {
       if (err) res.status(500).json({ Error: "Failed to authorize" });
       else if (!user || user.length === 0)
         res
@@ -82,8 +82,8 @@ exports.isAuthorized = (req, res) => {
           username: user.username,
           _id: user._id,
           imgSrc: user.imgSrc,
-          reviewed: user.reviewed,
-          commented: user.commented
+          review: user.review,
+          comment: user.comment
         });
       }
     });
@@ -104,8 +104,8 @@ exports.getLoggedIn = (req, res) => {
     reviewed: req.user.reviewed,
     commented: req.user.commented,
     imgSrc: req.user.imgSrc,
-    reviewed: req.user.reviewed,
-    commented: req.user.commented
+    review: req.user.review,
+    comment: req.user.comment
     };
   res.json(userInfo);
 };

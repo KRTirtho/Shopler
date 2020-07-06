@@ -54,14 +54,13 @@ router.patch("/product/update",  productHandlers.updateProductEdited)
 router.patch("/product/update/image", upload.single("imgSrc"), productHandlers.updateProductEditedImage)
 
 //% Product Review 
-router.post("/product/review", reviewHandler.addAffection)
+router.post("/product/review?", reviewHandler.affection)
 
 //% Cart 
 router.get("/user/cart", cartHandler.getCartProduct)
-router.post("/user/cart/add", cartHandler.addProduct)
-router.delete("/user/cart/delete", cartHandler.removeProduct)
+router.patch("/user/cart?", cartHandler.cartOperation)
 
-//! Cloudinary image upload test 
+//% Cloudinary image upload test 
 router.post("/cloudinary/test",  uploadUserImage.single("img"),authHandlers.testImageUpload)
 
 module.exports = router;

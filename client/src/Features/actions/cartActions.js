@@ -1,30 +1,90 @@
-export const ADD_TO_CART = "ADD_TO_CART";
-export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const CLEAR_CART = "CLEAR_CART";
-export const INCREMENT_QUANTITY = "INCREMENT_QUANTITY";
 export const MARK_ALL_READ = "MARK_ALL_READ";
 
+export const ADDED_TO_CART = "ADDED_TO_CART";
+export const ERROR_CART = "ERROR_CART";
+export const REMOVED_FROM_CART = "REMOVED_FROM_CART";
 
-export const addToCart = (payload) => {
-  return {
-    type: ADD_TO_CART,
-    payload: payload,
-  };
+export const GOT_ALL_CART = "GOT_ALL_CART";
+export const LOADING_CART = "LOADING_CART"
+
+
+export const cartAddOrRemove = ({productId, type}) => dispatch=> {
+  const headers = new Headers()
+  headers.append("Content-Type", "application/json")
+
+  const options = {
+    method: "PATCH",
+    headers: headers,
+    body: JSON.stringify({productId: productId}),
+    redirect: "follow"
+  }
+
+  const URL = `/api/user/cart?${type==="add"?"add=true": "remove=true"}`
+  
+  return fetch(URL, options)
+    .then(res=>{
+      dispatch({
+        type: LOADING_CART
+      })
+      if(res.ok){
+        return res.json()
+      }
+      else if(!res.ok){
+        dispatch({
+          type: ERROR_CART
+        })
+      }
+    })
+    .then(json=>{
+      if(json){
+        return dispatch({
+          type: type==="add"?ADDED_TO_CART: REMOVED_FROM_CART,
+          payload: json
+        })
+      }
+    })
+    .catch(err=>{
+      console.error({Failed: err})
+      dispatch({
+        type: ERROR_CART
+      })
+    })
 };
 
-export const incrementQuantity = payload=>{
-    return{
-        type: INCREMENT_QUANTITY,
-        payload: payload
-    }
+export const getCart = ()=>dispatch=>{
+  return fetch("/api/user/cart")
+          .then(res=>{
+            dispatch({
+              type: LOADING_CART
+            })
+            if(res.ok){
+              return res.json()
+            }
+            else if(!res.ok){
+              return dispatch({
+                type: ERROR_CART
+              })
+            }
+          })
+          .then(json=>{
+            if(json){
+              return dispatch({
+                type: GOT_ALL_CART,
+                payload: json
+              })
+            }
+          })
+          .catch(err=>{
+            console.error("Failed to get cart product: ",err)
+            return dispatch({
+              type: ERROR_CART
+            })
+          })
 }
 
-export const removeFromCart = (payload) => {
-  return { type: REMOVE_FROM_CART, payload: payload };
-};
-
-export const clearCart = () => {
-  return { type: CLEAR_CART };
+export const clearCart = () => dispatch=> {
+  return  { type: CLEAR_CART };
 };
 
 export const markAllRead = ()=>{

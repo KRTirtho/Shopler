@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {useSelector} from "react-redux"
 import { Link } from 'react-router-dom';
 import ProductImageLoader from '../Loaders/ProductImageLoader';
@@ -9,8 +9,23 @@ import useAffection from '../Hooks/useAffection';
 export default React.memo((props) => {
   const {userData} = useSelector(state=>state.userDataState)
   const {mode, _id} = props;
+  const [affectionate, setAffectionate] = useState(false)
+  const [affection, controlAffection] = useAffection()
 
-  const [affectionate, postAffectionate] = useAffection(_id)
+  useEffect(()=>{
+    const found = ()=>userData.review?.map((review) => {
+      if (review.productId === _id) {
+        setAffectionate(true);
+      }
+    });
+    found()
+    if(affection){
+      setAffectionate(true)
+    }
+    else if(affection===false){
+      setAffectionate(false)
+    }
+  }, [affection, affectionate])
 
     return (
       <div
@@ -79,7 +94,14 @@ export default React.memo((props) => {
               <button
                 title="Give affection to the seller"
                 className="description-btn active-filter hover-filter heart"
-                onClick={()=>postAffectionate(userData._id)}
+                onClick={()=>{
+                  if(!affectionate){
+                    controlAffection({providerId: userData._id, productId: _id, type: "add"})
+                  }
+                  else if(affectionate){
+                    controlAffection({providerId: userData._id, productId: _id,type: "remove"})
+                  }
+                }}
               >
                 <FontAwesomeIcon color={affectionate?"red":"#606060"} icon={["fas", "heart"]} />
               </button>

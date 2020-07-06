@@ -19,16 +19,9 @@ let userSchema = new mongoose.Schema({
 	type: { type: String },
 	githubId: { type: String },
 	googleId: Number,
-	reviewed: [
-		{
-		productId: mongoose.SchemaTypes.ObjectId,
-		},
-		],
-	commented: [
-		{
-		productId: mongoose.SchemaTypes.ObjectId,
-		},
-	],
+	review: [{productId: mongoose.SchemaTypes.ObjectId, _id: false}],
+	comment: [{productId: mongoose.SchemaTypes.ObjectId, _id: false}],
+	cart: [{productId: mongoose.SchemaTypes.ObjectId, quantity: {type: Number},_id: false}]
 })
 
 userSchema.methods = {
