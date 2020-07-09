@@ -1,11 +1,14 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faGoogle, faFacebook, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faFacebook, faGithub, faPaypal, faCcVisa, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
 import {} from "@fortawesome/free-regular-svg-icons"
 import {
+  faBoxes,
+  faHome,
+  faUpload,
   faCaretUp,
   faSearch,
   faSignOutAlt,
-  faTrashAlt,
+  faTrash,
   faUserCircle,
   faPencilAlt,
   faShoppingCart,
@@ -26,9 +29,19 @@ import {
   faEdit,
   faCartPlus,
   faPaperPlane,
+  faAngleUp,
+  faAngleDown,
+  faCheckCircle,
+  faHamburger
 } from "@fortawesome/free-solid-svg-icons";
 
 export default library.add({
+  faHamburger,
+  faBoxes,
+  faUpload,
+  faHome,
+  faAngleUp,
+  faAngleDown,
   faAngleRight,
   faPaperPlane,
   faCartPlus,
@@ -43,8 +56,9 @@ export default library.add({
   faQuestion,
   faCaretUp,
   faSearch,
+  faCheckCircle,
   faSignOutAlt,
-  faTrashAlt,
+  faTrash,
   faUserCircle,
   faGoogle,
   faFacebook,
@@ -55,7 +69,10 @@ export default library.add({
   faEye,
   faArrowCircleLeft,
   faArrowLeft,
-  faGithub
+  faGithub,
+  faPaypal, 
+  faCcVisa, 
+  faCcMastercard
 });
 
 /**

@@ -66,6 +66,7 @@
     color: white;
     border-radius: 5px;
 }
+
 .customer-profile-skeleton[data-mode="dark"] .customer-details-value{
     color: #cccccc;
 }
@@ -75,4 +76,10 @@
 .customer-profile-skeleton[data-mode="dark"] .customer-image-edit-btn{
     background-color: #3f3f3f;
     color: #dbdbdb;
+}
+@media (max-width: 500px){
+    .customer-profile-skeleton{
+        width: 90%;
+        margin-bottom: 2rem;
+    }
 }

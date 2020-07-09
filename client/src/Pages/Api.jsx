@@ -8,7 +8,7 @@ import "./css/Api.css"
 function Api() {
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid margin-adjust">
             <h1>Tiny CSS</h1>
             <p>A simple, tiny, long-typed CSS3 framework built with the inspiration from Legendary Bootstrap CSS & a bit from Respective Tailwind CSS.</p>
             <br/>

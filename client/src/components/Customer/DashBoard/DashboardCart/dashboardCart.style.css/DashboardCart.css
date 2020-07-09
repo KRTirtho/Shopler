@@ -1,0 +1,10 @@
+.dashboard-cart-skeleton{
+    width: 82%;
+    margin-left: auto;
+}
+
+@media (max-width: 650px){
+    .dashboard-cart-skeleton{
+        width: 100%;
+    }
+}

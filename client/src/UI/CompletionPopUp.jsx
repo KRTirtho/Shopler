@@ -1,20 +1,26 @@
 import React from "react";
 import "./css/CompletionPopUp.css";
 import { CSSTransition } from "react-transition-group";
+import PropTypes from "prop-types";
 
 /**
  * @props success : boolean, fail : boolean, successContent : string, failContent : string, active : boolean, onClick : eventHandler.function
-  */
+ */
 
 function CompletionPopUp(props) {
-  const { className, success, fail, successContent, failContent, active, onClick, mode } = props;
+  const {
+    className,
+    success,
+    fail,
+    successContent,
+    failContent,
+    active,
+    onClick,
+    mode,
+  } = props;
 
   return (
-    <CSSTransition
-      in={active}
-      classNames="fade-y"
-      timeout={500}
-      unmountOnExit>
+    <CSSTransition in={active} classNames="fade-y" timeout={500} unmountOnExit>
       <div data-mode={mode} className={`pop-up-skeleton ${className}`}>
         <div className="text-wrapper">
           <h6 className={success ? "color-success" : fail ? "color-fail" : ""}>
@@ -28,11 +34,24 @@ function CompletionPopUp(props) {
               ? "Task failed to accomplish"
               : "Error (this is an development error)"}
           </h6>
-          <button className="hover-filter active-scale" onClick={onClick}>&times;</button>
+          <button className="hover-filter active-scale" onClick={onClick}>
+            &times;
+          </button>
         </div>
       </div>
     </CSSTransition>
   );
 }
+
+CompletionPopUp.propTypes = {
+  className: PropTypes.string,
+  success: PropTypes.bool.isRequired,
+  fail: PropTypes.bool.isRequired,
+  successContent: PropTypes.string.isRequired,
+  failContent: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
+};
 
 export default CompletionPopUp;

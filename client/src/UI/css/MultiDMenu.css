@@ -5,7 +5,7 @@
   --bg: #333;
   --item-bg: #444;
   --item-bg-light: #ffffff;
-  --bg-light: #eee;
+  --bg-light: #fdfdfd;
   --text-color: white;
   --text-color-light: #333;
   --border: none;
@@ -61,7 +61,7 @@
   top: 100%;
   background-color: var(--bg-light);
   width: 18rem;
-  left: 50%;
+  left: -10%;
   transform: translateX(-80%);
   border: var(--border);
   border-radius: var(--border-radius);
@@ -103,7 +103,7 @@
 }
 .go-back-btn{
   border-radius: 50%;
-  background-color: #ffffff !important;
+  background-color: #ececec !important;
   height: 40px;
   width: 40px;
   display: flex;

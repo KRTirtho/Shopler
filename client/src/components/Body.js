@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LazyLoad from "react-lazyload";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "../libs/Tiny.utility.css";
 import "../libs/Tiny.Style.css";
 import "../libs/Tiny.components.css";
@@ -17,14 +17,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { cartAddOrRemove } from "../Features/actions/cartActions";
 import ProductCard from "../UI/ProductCard"
 
-const Body = React.memo(
-  ({
-    getProducts,
-    cartAddOrRemove,
-    setPaginating,
-    productState,
-    theme
-  }) => {
+const Body = React.memo(() => {
+    // Redux State
+    const {productState, theme} = useSelector(state=>state)
+    // Redux Dispatch
+    const dispatch = useDispatch()
+
     const { products, loading, error, hasMoreProduct } = productState; //*Redux State
     const [skip, setSkip] = useState(1);
     const [pagination, setPagination] = useState(false);
@@ -45,7 +43,7 @@ const Body = React.memo(
      * TODO: Cart Functions for adding to cart
       */
      const concatToCart = (payload)=>{
-        cartAddOrRemove({type: 'add', productId: payload})
+        dispatch(cartAddOrRemove({type: 'add', productId: payload}))
      } 
 
     /**
@@ -59,9 +57,9 @@ const Body = React.memo(
       const abortController = new AbortController();
       const signal = abortController.signal;
 
-      getProducts(skip, signal);
+      dispatch(getProducts(skip, signal))
       document.addEventListener("scroll", () => setPagination(true));
-      if (pagination===true) setPaginating(true);
+      if (pagination===true) dispatch(setPaginating(true))
       //% If the {ignore} is true then the component is un-mounting 
       if(ignore===true)abortController.abort()
       if(darkMode===true){
@@ -74,20 +72,20 @@ const Body = React.memo(
         //% Setting ignore true while component un-mounts
         ignore=true
         document.removeEventListener("scroll", () => setPagination(true))
-        setPaginating(false)
+        dispatch(setPaginating(false))
       };
       // eslint-disable-next-line
     }, [skip, darkMode]);
 
     return (
       //?Main container Div for Products page!!!
-      <div data-mode={mode} className="main-product-wrapper">
+      <div data-mode={mode} className="margin-adjust main-product-wrapper">
           <InfiniteScroll
             dataLength={products.length}
             next={()=>setSkip(prev=>prev+1)}
             loading={<ProductLoader/>}
             hasMore={hasMoreProduct}
-            className="display-flex justify-content-center flex-wrap width-full"
+            className="body-infinite-scroll-skeleton"
           >
 
           { products ? (
@@ -150,15 +148,4 @@ const Body = React.memo(
   }
 );
 
-const mapStateToProps = (state) => ({
-  productState: state.productState,
-  theme: state.theme
-});
-const ReduxState = connect(mapStateToProps, {
-  getProducts,
-  clearProductCache,
-  setPaginating,
-  cartAddOrRemove,
-})(Body);
-
-export default ReduxState;
+export default Body;

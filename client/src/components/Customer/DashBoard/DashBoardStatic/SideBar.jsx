@@ -1,33 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./dashboard.static.style.css/SideBar.css";
 import { Link, useRouteMatch } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import fontawesome from "../../../../fontawesome";
-import { useSelector } from "react-redux";
-
+import PropTypes from "prop-types"
 /**
  *! @Caution Here I'm using the same CSSTransition Classnames of <MultiDMenu/> for less code timesaving....
  */
 
-function SideBar() {
+function SideBar(props) {
   //Active Menu State
   const [activeMenu, setActiveMenu] = useState("Main");
-
-    //Redux State
-  const {darkMode} = useSelector(state => state.theme)
-
-  //DarkMode state
-  const [mode, setMode] = useState("")
-
-  useEffect(()=>{
-    if(darkMode)setMode("dark");
-    else if(!darkMode)setMode("");
-  }, [darkMode])
 
   //Router Url for matching
   const {url} = useRouteMatch();
 
+  const darkMode = props.mode==="dark"? true: false
+
+  const {open, setOpen, refer} = props
+  
   //MenuNavigation Component
   const MenuLink = (props) => {
     return (
@@ -54,8 +46,16 @@ function SideBar() {
   };
 
   return (
-    <div data-mode={mode} className="sidebar-skeleton">
-      {/* Routing Component */}
+    <CSSTransition
+      in={open}
+      timeout={200}
+      unmountOnExit
+      classNames="sidebar-collapse"
+    >
+    <div
+     ref={refer}
+     data-mode={props.mode} className="sidebar-skeleton">
+      {/* Routing Path Component */}
       <div className="route-history-skeleton">
         <FontAwesomeIcon
           className="tiny-margin-right history-slash"
@@ -71,6 +71,10 @@ function SideBar() {
               <h5>{activeMenu}</h5>
             </>
           )}
+        {
+          window.innerWidth<=650 &&
+          <button onClick={()=>setOpen(false)} className="sidebar-cross-button">&times;</button>
+        }
       </div>
 
       {/* All the routing Components */}
@@ -146,6 +150,7 @@ function SideBar() {
         </div>
       </CSSTransition>
     </div>
+    </CSSTransition>
   );
 }
 
@@ -156,5 +161,9 @@ const RouteLink = (props) => {
     </Link>
   );
 };
+
+RouteLink.propTypes = {
+  to: PropTypes.string.isRequired
+}
 
 export default SideBar;

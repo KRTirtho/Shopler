@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {connect} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
 import "../../libs/Tiny.utility.css";
 import "../../libs/Tiny.Style.css";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SubmitPopUp from "../..//UI/SubmitPopUp"
 import { postAndGetUserData, cleanUserCache } from "../../Features/actions/userActions"
 
 
-function Login({ userDataState, postAndGetUserData, cleanUserCache, theme}) {
+function Login() {
+  // Redux State
+  const {userDataState, theme} = useSelector(state=>state)
+  // Redux mapDispatchToProps
+  const dispatch = useDispatch();
+  
   const [emailValue, setEmailValue] = useState(""); //Controlled Email input
   const [passValue, setPassValue] = useState(""); //Controlled Pass input
   const [popUpActive, setPopUpActive] = useState('inactive') //Pop-up handling for error or success
   const [mode, setMode] = useState("")
   const {darkMode} = theme;
+  const history = useHistory()
 
   const {userData, userDataError, loggedIn} = userDataState
   const error = userDataError
@@ -29,7 +35,7 @@ function Login({ userDataState, postAndGetUserData, cleanUserCache, theme}) {
 //Login Credentials Submitter Func---------------------------------------
 const loginSubmit = (e) => {
   e.preventDefault()
-  postAndGetUserData({emailValue, passValue})
+  dispatch(postAndGetUserData({emailValue, passValue}))
   setPopUpActive('active')//!Pop up active
   };
 
@@ -40,13 +46,14 @@ const loginSubmit = (e) => {
     }
     if(darkMode)setMode("dark")
     else if(!darkMode)setMode("")
-  }, [userDataError, userData.username, darkMode])
+    if(loggedIn)history.push("/")
+  }, [userData.username,darkMode])
   
 //-----------------------------------------------------------
 return (
   <>
       {!loggedIn &&
-      <div data-shade={mode} className="width-quarter container-div vertical-center-strict top-30 border-rounded md-padding tiny-shadow">
+      <div data-shade={mode} className="container-div vertical-center-strict top-30 border-rounded md-padding tiny-shadow">
         {/* Submit Pop Up */}
       <SubmitPopUp
         success={loggedIn}
@@ -55,7 +62,7 @@ return (
         failContent = "Email or Password is not correct!"
         hideControl={()=>{
           setPopUpActive('inactive')
-          cleanUserCache()
+          dispatch(cleanUserCache())
         }}
         active = {popUpActive}
         />
@@ -96,14 +103,8 @@ return (
         </p>
       </div>
     }
-    {loggedIn ? <Redirect to="/"/>:''}
       </>
   )
 }
 
-const mapStateToProps = (state)=>({
-  userDataState: state.userDataState,
-  theme: state.theme
-})
-
-export default connect(mapStateToProps, {postAndGetUserData, cleanUserCache})(Login);
+export default Login;

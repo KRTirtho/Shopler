@@ -1,0 +1,38 @@
+# Development Routes
+/api/users/ (get)
+
+# Authentication & Authorization Routes
+/api/users/:userId (get)
+/api/user/is-authorized (get)
+/api/user/signup (post)
+/api/user/login (post)
+/api/user/logout (get)
+
+# Social Authentication Routes
+/api/auth/github/ (get)
+/api/auth/github/callback/ (get)
+
+# Image Upload Routes
+/api/users/image (post)
+/api/product/update/image (patch)
+
+# Product Related Routes
+/api/product/all/ (get)
+/api/products/:productId (get)
+/api/product-query? (get)
+/api/user-products? (get)
+/api/product (post)
+/api/product-delete (delete)
+/api/product/:userId/:productId (get)
+/api/product/update (patch)
+
+# Review Routes
+/api/product/review (get)
+/api/product/review? (patch)
+
+# Cart Routes
+/api/user/cart (get)
+/api/user/cart? (post)
+
+# test Routes
+/api/cloudinary/test (post)

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "../../libs/Tiny.utility.css";
 import "../../libs/Tiny.Style.css";
@@ -17,14 +17,16 @@ import { useRouteMatch } from "react-router-dom";
 import { cartAddOrRemove } from "../../Features/actions/cartActions"
 import useAffection from "../../Hooks/useAffection";
 
-function Product({
-  userDataState,
-  productState,
-  getProductById,
-  clearSingleProductCache,
-  darkMode,
-  cartAddOrRemove
-}) {
+const  Product = ()=>{
+  // Redux State
+  const {userDataState, productState, theme} = useSelector(state=>state)
+  // redux Dispatch
+  const dispatch = useDispatch();
+
+  
+  // Dark mode
+  const {darkMode} = theme
+
   const { params } = useRouteMatch()
 
   
@@ -41,7 +43,7 @@ function Product({
   const [affection, controlAffection] = useAffection()
 
   useEffect(() => {
-    getProductById(params.productId);
+    dispatch(getProductById(params.productId))
     const found = ()=>userData.review?.map((review) => {
       if (review.productId === params?.productId) {
         setAffectionate(true);
@@ -54,14 +56,14 @@ function Product({
     else if(affection===false){
       setAffectionate(false)
     }
-    return () => clearSingleProductCache();
+    return () => dispatch(clearSingleProductCache())
     // eslint-disable-next-line
   }, [affectionate, affection, params.productId, userData.review]);
   
   return (
     <TransitionGroup>
        <CSSTransition classNames="fade-product" timeout={5000}>
-        <div className="position-absolute width-full display-flex border-rounded vertical-center">
+        <div className="position-absolute width-full display-flex border-rounded vertical-center margin-adjust">
           {!single_product_loading && !single_product_error ? (
             <>
               <div className="img-container">
@@ -114,7 +116,7 @@ function Product({
                 </div>
 
                   <div className="display-flex lg-margin-top">
-                    <button onClick={()=>cartAddOrRemove({type: "add", productId: single_product._id})} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
+                    <button onClick={()=>dispatch(cartAddOrRemove({type: "add", productId: single_product._id}))} className="btn bg-color-middarkgray color-chillyellow border-radius-top-right-0 border-radius-bottom-right-0">Add to Cart<FontAwesomeIcon className="tiny-margin-left" color="white" icon={["fas", "shopping-cart"]}/></button>
                     <button onClick={()=>{
                       if(!affectionate){
                         controlAffection({providerId: userData._id, productId: single_product._id, type: "add"})
@@ -140,14 +142,4 @@ function Product({
   );
 }
 
-const mapStateToProps = (state) => ({
-  productState: state.productState,
-  userDataState: state.userDataState,
-  darkMode: state.theme.darkMode
-});
-
-export default connect(mapStateToProps, {
-  getProductById,
-  cartAddOrRemove,
-  clearSingleProductCache,
-})(Product);
+export default Product

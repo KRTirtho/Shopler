@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import "../libs/Tiny.utility.css";
 import CompletionPopUp from "../UI/CompletionPopUp"
 import useFetchP3D from "../Hooks/useFetchP3D";
 
-const Upload = ({ userDataState, theme }) => {
+const Upload = () => {
+  // Redux State
+  const {userDataState, theme} = useSelector(state=>state)
+
   const [error, setError] = useState(false); //executes big img-size, unfulfilled fields & completion errors 
   const [popUpActive, setPopUpActive] = useState(false); //For CompletionPopUp state
   const [failContent, setFailContent] = useState("");
@@ -46,7 +49,7 @@ const Upload = ({ userDataState, theme }) => {
 
   //Custom hook for fetching data with loading state 
   // eslint-disable-next-line
-  const [request, data, success, fetchError] = useFetchP3D({cleanUp: false});
+  const [request, , success, fetchError] = useFetchP3D({cleanUp: false});
 
   
   const uploadProduct = (e) => {
@@ -136,11 +139,11 @@ const Upload = ({ userDataState, theme }) => {
             onSubmit={(e) => uploadProduct(e)}
           >
             {/* container for input({type="text"||type(_proto_)=="text"}) */}
-            <div className="display-flex">
+            <div className="display-flex flex-wrap">
               {/* {name="title"} */}
               <input
                 data-shade={mode}
-                className="input-custom tiny-margin-bottom"
+                className="input-custom tiny-margin-bottom tiny-margin-right"
                 type="text"
                 placeholder="Product Title"
                 name="title"
@@ -151,7 +154,7 @@ const Upload = ({ userDataState, theme }) => {
                 {/* {name="details"} */}
               <input
                 data-shade={mode}
-                className="input-custom tiny-margin-bottom tiny-margin-left"
+                className="input-custom tiny-margin-bottom"
                 type="text"
                 placeholder="Product Details"
                 name="details"
@@ -214,9 +217,4 @@ const Upload = ({ userDataState, theme }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-  theme: state.theme
-});
-
-export default connect(mapStateToProps)(Upload);
+export default Upload

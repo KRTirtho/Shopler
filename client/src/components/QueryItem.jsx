@@ -22,7 +22,7 @@ function QueryItem() {
 
     return (
       
-        <div className="display-flex width-full flex-wrap justify-content-center position-absolute">
+        <div className="margin-adjust display-flex width-full flex-wrap justify-content-center position-absolute">
           {query_product.result && !query_product_loading && !query_product_error?query_product.result.map(d=>(
             <BodyDiv
             mode={mode}

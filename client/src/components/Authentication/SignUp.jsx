@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import {useSelector, useDispatch } from "react-redux";
 import "../../libs/Tiny.utility.css";
 import "../../libs/Tiny.Style.css";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import CompletionPopUp from "../../UI/CompletionPopUp";
-import {
-  setLoggedIn,
-  setUserData,
-  postAndGetUserData,
-} from "../../Features/actions/userActions";
+import {postAndGetUserData} from "../../Features/actions/userActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // eslint-disable-next-line
 import library from "../../fontawesome";
 import "./css/SignUp.css";
 
-function SignUp({
-  userDataState,
-  postAndGetUserData,
-  theme
-}) {
+function SignUp() {
+  // Redux State --
+  const {userDataState, theme} = useSelector(state=>state)
+  // Redux Dispatch 
+  const dispatch = useDispatch()
+  
   const { loggedIn, userDataError } = userDataState;
+  const history = useHistory()
 
   // state for all {input(type="text")||(type(_proto_)="text")}
   const [inputState, setInputState] = useState({
@@ -89,11 +87,11 @@ function SignUp({
           if (res.status === 200) {
             setSignedUp(true);
             setError(false);
-
-            postAndGetUserData({
+          // Redux Dispatch
+            dispatch(postAndGetUserData({
               emailValue: inputState.email,
               passValue: inputState.password,
-            }).then(() => {
+            })).then(() => {
               setInputState({
                 username: "",
                 email: "",
@@ -107,7 +105,7 @@ function SignUp({
                 zipCode: "",
                 region: "",
               });
-            });
+            })
           } else if (res.status === 400) {
             setSignedUp(false);
             setError(true);
@@ -118,7 +116,6 @@ function SignUp({
             setFailContent("Email already exists!");
           }
         })
-        //!because the json obj is in userData.result if not given then profilePage &  profile will break!
         .catch((err) => {
           console.log("Failed to SignUp: " + err);
           setSignedUp(false);
@@ -142,13 +139,14 @@ function SignUp({
         "You are signed up but not able login. Please manually Login"
       );
     }
+    if(loggedIn)history.push("/");
     if(darkMode){
       setMode("dark")
     }
     else if(!darkMode){
       setMode("")
     }
-  }, [userDataError, darkMode]);
+  }, [darkMode, loggedIn]);
 
   return (
     <>
@@ -163,7 +161,7 @@ function SignUp({
             onClick={() => setPopUpActive(false)}
             active={popUpActive}
           />
-          <div data-shade={mode} className="width-half container-div vertical-center-strict top-10 border-rounded md-padding tiny-shadow">
+          <div data-shade={mode} className="container-div vertical-center-strict top-10 border-rounded md-padding tiny-shadow">
             {/* Submit PopUp */}
             <h1 className="text-align-center">SignUp</h1>
             {/* Form Element */}
@@ -343,18 +341,8 @@ function SignUp({
         </>
       )}
       {/* After authorization */}
-      {loggedIn && <Redirect to="/" />}
     </>
   );
 }
 
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-  theme: state.theme
-});
-
-export default connect(mapStateToProps, {
-  setLoggedIn,
-  setUserData,
-  postAndGetUserData,
-})(SignUp);
+export default SignUp

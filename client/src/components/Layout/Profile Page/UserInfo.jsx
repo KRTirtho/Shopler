@@ -181,7 +181,8 @@ function UserInfo({ userId, loggedIn, mode }) {
     return ()=>{
       abortController.abort();
     }
-  }, [loggedIn, inputEditState, popUpActive, userId]);
+    // Caution: Dep.. -> userId (Invalid) 
+  }, [loggedIn, inputEditState, popUpActive]);
   
   return (
     <div data-mode={mode} className="user-info-container">

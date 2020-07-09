@@ -90,13 +90,6 @@ export const setLoggedIn = (val)=>(dispatch)=>{
     })
 }
 
-export const setUserData = (payload)=>dispatch=>{
-    dispatch({
-        type: SET_USER_DATA,
-        payload: payload
-    })
-}
-
 export const cleanUserCache = ()=>dispatch=>{
     dispatch({
         type: CLEAR_USER_CACHE

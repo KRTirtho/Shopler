@@ -21,8 +21,6 @@ mongoose.connect(URI, {
 .catch(err=>console.log("Failed to connect:", err))
 
 app.use(cors());
-app.use("/api/image", express.static("FileStorage/productImage"))
-app.use("/api/user/image", express.static("FileStorage/userImage"))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('etag', false)

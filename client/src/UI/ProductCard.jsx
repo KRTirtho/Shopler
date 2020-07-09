@@ -5,8 +5,9 @@ import ProductImageLoader from '../Loaders/ProductImageLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "./css/ProductCard.css"
 import useAffection from '../Hooks/useAffection';
+import PropTypes from "prop-types"
 
-export default React.memo((props) => {
+const  ProductCard= React.memo((props) => {
   const {userData} = useSelector(state=>state.userDataState)
   const {mode, _id} = props;
   const [affectionate, setAffectionate] = useState(false)
@@ -126,3 +127,16 @@ export default React.memo((props) => {
       </div>
     );
   })
+
+  ProductCard.propTypes = {
+    mode: PropTypes.string.isRequired,
+    _id: PropTypes.string,
+    imgSrc: PropTypes.string,
+    title: PropTypes.string,
+    details: PropTypes.string,
+    description: PropTypes.string,
+    addToCart: PropTypes.func,
+  }
+
+  export default ProductCard
+  

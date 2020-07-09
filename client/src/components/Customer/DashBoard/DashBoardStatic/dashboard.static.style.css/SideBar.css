@@ -7,6 +7,7 @@
     box-shadow: 0 2px 5px #919191;
     overflow-x: hidden;
     z-index: 15;
+    transition: 2s position ease;
 }
 .sidebar-skeleton[data-mode="dark"]{
     background-color: #363636;
@@ -77,4 +78,36 @@
 .history-slash{
     position: relative;
     bottom: 2px;
+}
+
+
+.sidebar-collapse-enter{
+    left: -110%;
+}
+.sidebar-collapse-enter-active{
+    left: 0;
+    transition: .2s all ease;
+}
+.sidebar-collapse-exit{
+    left: 0;
+    transition: .2s all ease;
+}
+.sidebar-collapse-exit-active{
+    left: -110%;
+}
+.sidebar-cross-button{
+    border: none;
+    background-color: black;
+    color: wheat;
+    margin-left: auto;
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+@media (max-width: 650px){
+    .sidebar-skeleton{
+        width: 13rem;
+    }
+    
 }

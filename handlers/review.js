@@ -1,9 +1,7 @@
 const Product = require("../models/Image");
 const User = require("../models/User");
 const { Types } = require("mongoose");
-const { deleteProduct } = require("./products");
-const { remove } = require("../models/Image");
-const {OK, NOT_FOUND, METHOD_FAILURE, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_ACCEPTABLE, CONFLICT, FAILED_DEPENDENCY} = require("http-status-codes")
+const {OK, NOT_FOUND, METHOD_FAILURE, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_ACCEPTABLE, CONFLICT, FAILED_DEPENDENCY, NO_CONTENT} = require("http-status-codes")
 
 /**
  * @body productId: MongoObjectId, providerId: MongoObjectId   
@@ -12,7 +10,6 @@ const {OK, NOT_FOUND, METHOD_FAILURE, INTERNAL_SERVER_ERROR, UNAUTHORIZED, NOT_A
 const addAffection = (req, res) => {
   //Security Check
   const {productId, providerId} = req.body
-  if (req.isAuthenticated()) {
     /*
     % $addToSet only inserts the document value if it already doesn't exist. if exist then it cancel the operation without errors
     % $pull deletes value<any> of a array sub-document with the provided unique selector or _id  
@@ -28,7 +25,7 @@ const addAffection = (req, res) => {
               if(!user){
                 return Product.findByIdAndUpdate(productId, {$pull: {review: {provider: providerId}}}, {new: true}).exec()
                     .then(deletedProduct=>{
-                      if(!deleteProduct)res.status(500).json({Error: "Failed to undo saving in Product.review.$.provider"})
+                      if(!deletedProduct)res.status(500).json({Error: "Failed to undo saving in Product.review.$.provider"})
                       return res.status(METHOD_FAILURE).json({Error: "Failed to give affection to the product", affection: false}) 
                     })
                     .catch(err=>{
@@ -49,11 +46,6 @@ const addAffection = (req, res) => {
         console.log("Add Affection Error: ", err)
         return res.status(INTERNAL_SERVER_ERROR).json({Error: "Unknown error occurred"})
       })//End of adding provider to Product
-    }
-  //For unauthorized
-  else {
-    return res.status(UNAUTHORIZED).json({ Error: "Unauthorized, forbidden" });
-  }
 };
 
 /**
@@ -65,7 +57,6 @@ const removeAffection = (req, res) => {
   //Req.body
   const { productId, providerId } = req.body;
 
-  if (req.isAuthenticated()) {
     //Checking if product available or not
     Product.findByIdAndUpdate(productId, {$pull: {review: {provider: providerId}}})
       .exec()
@@ -105,21 +96,61 @@ const removeAffection = (req, res) => {
             affection: true
           });//Ends Removing Affection from Product
         });
-      }
-        else {
-        return res.status(UNAUTHORIZED).json({ Error: "Unauthorized, forbidden" });
-      }
     } 
 // Main index function for add & remove affection
+
+// Get Reviewed Products
+exports.getReviewedProducts = (req, res)=>{
+  const {_id} = req.user
+  // First getting the products from user Reviewed 
+  if(req.isAuthenticated()){
+    return User.findById(_id).select("review -_id").exec()
+    .then((user)=>{
+      if(!user)res.status(NOT_FOUND).json({Error: "No user Found with the following id: "+_id})
+      // Now getting the user reviewed products if the length > 0
+      else if(user.review.length>0){
+        //mapping through all the products & just taking the Id 
+        const productId = user.review.map(product=>product.productId)
+        return Product.find({_id: productId}).select("-review").exec()
+          .then(product=>{
+            if(!product)res.status(NOT_FOUND).json({Error: "No products found"})
+            return res.status(OK).json(product)
+          })
+          .catch(err=>{
+            console.log("GET REVIEWED PRODUCT ERROR", err);
+            return res.status(INTERNAL_SERVER_ERROR).json({Error: "Unknown error occurred"})
+          })
+        }
+      // If user doesn't have any reviewed product then we don't query
+      else if(user.review.length===0){
+        return res.status(NO_CONTENT).json({Message: "User didn't reviewed any product yet"})
+      }
+    })
+    .catch(err=>{
+      console.error("GET REVIEWED PRODUCT ERROR: ", err)
+      return res.status(INTERNAL_SERVER_ERROR).json({Error: "Unknown error occurred"})
+    })
+  }
+  else {
+    return res.status(UNAUTHORIZED).json({Error: "Unauthorized, forbidden"})
+  }
+}
+
 exports.affection = (req, res)=>{
   const { add, remove } = req.query
-  if(add==="true" && remove==="true"){
-    return res.status(CONFLICT).json({Error: "Conflictual Error: Can't do two task of a same thread at one time"})
+  if(req.isAuthenticated()){
+    if(Object.keys(req.query).length>1){
+      return res.status(CONFLICT).json({Error: "Conflictual Error: Can't do two task of a same thread at same time"})
   }
-  else if(add==="true" && remove!=="true"){
+  else if(add==="true"){
     return addAffection(req, res)
   }
-  else if(remove==="true" && add!=="true"){
+  else if(remove==="true"){
     return removeAffection(req, res)
+  }
+}
+
+  else {
+  return res.status(UNAUTHORIZED).json({Error: "Unauthorized, forbidden"})
   }
 }

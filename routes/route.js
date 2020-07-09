@@ -54,6 +54,7 @@ router.patch("/product/update",  productHandlers.updateProductEdited)
 router.patch("/product/update/image", upload.single("imgSrc"), productHandlers.updateProductEditedImage)
 
 //% Product Review 
+router.get("/product/review", reviewHandler.getReviewedProducts)
 router.post("/product/review?", reviewHandler.affection)
 
 //% Cart 

@@ -19,8 +19,11 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import DashBoard from "./components/Customer/DashBoard/DashBoard";
 
 const App = () => {
+  // Redux State
   const {userDataState, theme} = useSelector((state=>state))
+  // Redux Dispatch
   const dispatch = useDispatch();
+
   const { loggedIn } = userDataState;
   const { darkMode } = theme;
 
@@ -35,6 +38,8 @@ const App = () => {
     }
     // eslint-disable-next-line
   }, [darkMode]);
+
+  console.log("RENDER")
 
   return( <>
     <Router>

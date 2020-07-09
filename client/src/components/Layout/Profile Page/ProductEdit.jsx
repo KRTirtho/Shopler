@@ -107,7 +107,7 @@ const ProductEdit = memo(({ match }) => {
   }, [isImgEditing, isEditing, loggedIn, popUpActive, darkMode]);
 
   return (
-    <>
+    <div className="margin-adjust">
       <CompletionPopUp
         mode={mode}
         success={success}
@@ -279,7 +279,7 @@ const ProductEdit = memo(({ match }) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 });
 

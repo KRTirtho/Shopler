@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import "./dashboard.style.css/CustomerProfilePage.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Link } from "react-router-dom"
+import { Link, useRouteMatch } from "react-router-dom"
 
 export const CustomerProfilePage = () => {
+        // Converting the url
+        const {url} = useRouteMatch()
+        const splitUrl = url.split("/")
+        const URL = splitUrl.slice(0, splitUrl.length-1).join("/");
+
         //Image editing state
         const [userImagePrev, setUserImgPrev] = useState("")
         const [userImgEdit, setUserImgEdit] = useState(false)
@@ -65,11 +70,11 @@ export const CustomerProfilePage = () => {
                 {/* Button Sections */}
                 <div className="customer-details-btn">
                     <Link to="/">
-                     <button className="hover-filter active-filter">Shop More <FontAwesomeIcon icon={["fas", "cart-plus"]}/></button>
+                     <button className="hover-filter active-filter tiny-margin-right tiny-margin-bottom">Shop More <FontAwesomeIcon icon={["fas", "cart-plus"]}/></button>
                     </Link>
 
-                    <Link to="*">
-                     <button className="hover-filter active-filter tiny-margin-left">Check Out <FontAwesomeIcon icon={["fas", "paper-plane"]}/></button>
+                    <Link to={`${URL}/cart`}>
+                     <button className="hover-filter active-filter">Check Out <FontAwesomeIcon icon={["fas", "paper-plane"]}/></button>
                     </Link>
                 </div>
             </div>

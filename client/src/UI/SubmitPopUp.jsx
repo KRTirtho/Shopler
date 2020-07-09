@@ -1,5 +1,6 @@
 import React from "react";
 import "./css/SubmitPopUp.css";
+import PropTypes from "prop-types"
 
 
 const SubmitPopUp = (props) => {
@@ -24,6 +25,12 @@ const SubmitPopUp = (props) => {
  );
 };
 
-
+SubmitPopUp.propTypes = {
+  success: PropTypes.bool.isRequired,
+  fail: PropTypes.bool.isRequired,
+  successContent: PropTypes.string.isRequired,
+  failContent: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired
+}
 
 export default SubmitPopUp;

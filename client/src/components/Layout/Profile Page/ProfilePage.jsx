@@ -31,7 +31,8 @@ const ProfilePage = React.memo(() => {
     if(darkMode)setMode("dark")
     else if(!darkMode)setMode("")
     // eslint-disable-next-line
-  }, [loggedIn, url, sort, darkMode]);
+    // Caution: dependency-> url (Invalid)
+  }, [loggedIn, sort, darkMode]);
 
   const handleSort = (sortVal) => {
       if (loggedIn) {
@@ -68,7 +69,7 @@ const ProfilePage = React.memo(() => {
 
   return (
     <>
-    <div className="display-flex position-absolute width-full">
+    <div className="display-flex position-absolute width-full mt-5">
       <div data-mode={mode} className="display-flex flex-col align-items-center upload-container">
         <h3 className="text-align-center">Uploaded's</h3>
         <div className="display-flex width-full justify-content-end">

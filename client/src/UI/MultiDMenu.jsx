@@ -5,12 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logOutUser } from "../Features/actions/userActions";
 // eslint-disable-next-line
 import library from "../fontawesome";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import useOnClickOutside from "../Hooks/useOnClickOutSide";
 import { setDarkMode } from "../Features/actions/themeActions";
+import PropTypes from "prop-types"
 
-function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
+function MultiDMenu() {
+  // Redux State
+  const {userDataState, theme} = useSelector(state=>state)
+  // Redux Dispatch
+  const dispatch = useDispatch()
+  
   const [activeMenu, setActiveMenu] = useState("main"); //menu names
   const [menuHeight, setMenuHeight] = useState(0); //For the menu height
   const { loggedIn, userData } = userDataState; //menu toggler
@@ -54,7 +60,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
   }
 
   const handleDarkModeToggle = (e) => {
-    setDarkMode(!darkMode);
+    dispatch(setDarkMode(!darkMode))
     };
 
   //Each & Individual item
@@ -88,9 +94,19 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
     );
   };
 
+  // Item Props
+  Item.propTypes = {
+    content: PropTypes.node.isRequired || PropTypes.string.isRequired,
+    leftIcon: PropTypes.node,
+    rightIcon: PropTypes.node,
+    goToMenu: PropTypes.string,
+    className: PropTypes.string
+
+  }
+
   // Special type of Item with extra goBack functionality
   const GoBack = (props) => {
-    const { content, goto } = props;
+    const { goto } = props;
     return (
       <div
         data-mode={mode}
@@ -108,6 +124,11 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
       </div>
     );
   };
+
+  // GoBack Props
+  GoBack.propTypes = {
+    goto: PropTypes.string
+  }
 
   //For Opening the dropdown & prevent openState of cartMenu if MultiDMEnu is Open
   const toggleDropdown = () => {
@@ -240,7 +261,7 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
                   />} content="Likes" />
               <Item leftIcon="😍" content="Events"/>
               <Item
-                onClick={() => logOutUser()}
+                onClick={() => dispatch(logOutUser())}
                 leftIcon={
                   <FontAwesomeIcon
                     className="tiny-margin-left"
@@ -274,9 +295,4 @@ function MultiDMenu({ userDataState, logOutUser, theme, setDarkMode }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  userDataState: state.userDataState,
-  theme: state.theme
-});
-
-export default connect(mapStateToProps, { logOutUser, setDarkMode })(MultiDMenu);
+export default MultiDMenu
