@@ -8,7 +8,7 @@ import {postAndGetUserData} from "../../Features/actions/userActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // eslint-disable-next-line
 import library from "../../fontawesome";
-import "./css/SignUp.css";
+import "./scss/SignUp.scss";
 
 function SignUp() {
   // Redux State --

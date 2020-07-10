@@ -10,13 +10,22 @@ import library from "../fontawesome";
 import MultiDMenu from "./MultiDMenu";
 import Cart from "../components/Customer/Cart";
 import PropTypes from "prop-types"
+import {getCart} from "../Features/actions/cartActions"
 
+/**
+  ** As getCart() redux action creates issue in Cart.jsx as it renders often, that's why calling 
+    getCart() from AppNavBar as it is a globally available component  
+  */
 
 function AppNavBar() {
-  const {userDataState, theme} = useSelector(state=>state)
+  // Redux State
+  const {userDataState, theme, cartState} = useSelector(state=>state)
+  // Redux Dispatch
   const dispatch = useDispatch();
 
   const {userData} = userDataState
+
+  const {firstTime, error} = cartState;
   
   const [mode, setMode] = useState("");
   const { darkMode } = theme;
@@ -27,7 +36,8 @@ function AppNavBar() {
     else if(!darkMode){
       setMode("")
     }
-  }, [darkMode]);
+    dispatch(getCart())
+  }, [darkMode, dispatch, firstTime]);
 
   const NavBar = (props) => {
     return (

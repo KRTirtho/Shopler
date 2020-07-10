@@ -1,20 +1,17 @@
-:root{
-    --main-bg: #fff;
-    --main-bg-dark: #222;
-}
+$main-bg: #fff;
+$main-bg-dark: #222;
 body[data-mode="dark"]{
-    background-color: var(--main-bg-dark) !important;
+    background-color: $main-bg-dark !important;
 }
-
 .main-product-wrapper{
     width: 100%;
     background-color: var(--main-bg);
-}
-.main-product-wrapper[data-mode="dark"]{
-    background-color: var(--main-bg-dark);
 }
 .body-infinite-scroll-skeleton{
     display: flex;
     flex-flow:row  wrap;
     justify-content: center;
+}
+.main-product-wrapper[data-mode="dark"]{
+    background-color: $main-bg-dark;
 }

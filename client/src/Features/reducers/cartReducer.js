@@ -7,15 +7,14 @@ import {
   LOADING_CART,
   ERROR_CART,
   QUANTITY_UPDATED,
-  NO_PRODUCT_AVAILABLE
 } from "../actions/cartActions";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const initialState = {
   products: [],
   firstTime: true,
   error: false,
   loading: false,
-  noProducts: false,
   notification: 0,
 };
 
@@ -25,7 +24,6 @@ const cartReducer = (state = initialState, action) => {
       return{
         ...state,
         products: action.payload,
-        noProducts: false,
         firstTime: true,
         loading: false,
         error: false
@@ -34,7 +32,6 @@ const cartReducer = (state = initialState, action) => {
     return {
       ...state,
           loading: true,
-          noProducts: false,
           firstTime: true,
           error: false
         }
@@ -42,7 +39,6 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         error: true,
-        noProducts: true,
         firstTime: true,
          loading: false 
         }
@@ -50,27 +46,25 @@ const cartReducer = (state = initialState, action) => {
        return {
          ...state,
          notification: state.notification + 1,
-         noProducts: false,
          firstTime: false,
          loading: false,
          error: false
         }
     case REMOVED_FROM_CART: 
-    return {
-      ...state,
-      firstTime: false,
-      notification: state.notification>0?state.notification-1:0,
-      noProducts: false,
-      loading: false,
-      error: false
-    }
+        return {
+          ...state,
+          products: state.products.length===1?[]:state.products,
+          firstTime: false,
+          notification: state.notification>0?state.notification-1:0,
+          loading: false,
+          error: false
+        }
     case QUANTITY_UPDATED: 
        return {
          ...state,
          firstTime: false,
          loading: false,
          error: false,
-         noProducts: false
        }
     case CLEAR_CART:
       return {
@@ -78,18 +72,8 @@ const cartReducer = (state = initialState, action) => {
         firstTime: false,
         loading: false,
         error: false,
-        noProducts: true,
         notification: 0
       };
-    case NO_PRODUCT_AVAILABLE:
-      return {
-        ...state,
-        noProducts: true,
-        firstTime: true,
-        loading:false,
-        error: false,
-        
-      }
     case MARK_ALL_READ:
       return {
         ...state,

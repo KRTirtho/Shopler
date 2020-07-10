@@ -10,7 +10,7 @@ import {
   clearProductCache,
   setPaginating,
 } from "../Features/actions/productActions";
-import "./css/Body.css";
+import "./scss/Body.scss";
 import ProductLoader from "../Loaders/ProductLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 // eslint-disable-next-line

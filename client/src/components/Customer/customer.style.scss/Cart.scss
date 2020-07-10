@@ -1,3 +1,10 @@
+// Colors
+$bg-color: #fff;
+$bg-color-dark: #333;
+$cart-skeleton-shadow: #7e7d7d;
+$cart-skeleton-shadow-dark: #232323;
+
+
 .cart-skeleton{
     position: absolute;
     right: 5%;
@@ -5,15 +12,15 @@
     z-index: 410; /* ! */
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: $bg-color;
     border-radius: 5px;
-    box-shadow: 0 0 20px #7e7d7d;
+    box-shadow: 0 0 20px $cart-skeleton-shadow;
     height: 500px;
     width: 23rem;
 }
 .cart-skeleton[data-mode="dark"]{
-    background-color: #333;
-    box-shadow: 0 0 20px #232323;
+    background-color: $bg-color-dark;
+    box-shadow: 0 0 20px $cart-skeleton-shadow-dark;
     color: white;
 }
 

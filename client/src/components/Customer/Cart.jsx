@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, memo } from "react";
 import {useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./customer.style.css/Cart.css";
+import "./customer.style.scss/Cart.scss";
 import { CSSTransition } from "react-transition-group";
 import {Link} from "react-router-dom"
 import {

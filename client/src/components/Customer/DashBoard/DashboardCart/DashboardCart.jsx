@@ -3,21 +3,11 @@ import DashboardCartProducts from './DashboardCartProducts'
 import "./dashboardCart.style.css/DashboardCart.css"
 import { useSelector, useDispatch } from 'react-redux'
 import { Checkout } from './Checkout'
-import { getCart } from '../../../../Features/actions/cartActions'
 
 const  DashboardCart = (props)=> {
     /* Redux State of Cart */
     const {products, loading} = useSelector(state=>state.cartState)
-    /* Redux Dispatch */
-    const dispatch = useDispatch()
-    
     const {mode} = props
-    
-
-    useEffect(()=>{
-        dispatch(getCart())
-    }, [])
-
     return (
         <div className="dashboard-cart-skeleton">
             {/* mapping through products & appending them */}

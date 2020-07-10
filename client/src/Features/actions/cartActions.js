@@ -95,11 +95,6 @@ export const getCart = (signal)=>dispatch=>{
             if(res.ok){
               return res.json()
             }
-            else if(res.status(204)){
-              return dispatch({
-                type: NO_PRODUCT_AVAILABLE
-              })
-            }
             else if(!res.ok){
               return dispatch({
                 type: ERROR_CART
