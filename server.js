@@ -43,6 +43,10 @@ app.use(passport.session())
 //For all routes in production
 if(NODE_ENV==="production"){
   app.use(express.static("client/build"))
+  // important because if not set then React Router won't work
+  app.get("/*", (req, res)=>{
+    res.sendFile(__dirname+"/client/build/index.html")
+  })
 }
 
 app.use("/api", router);
