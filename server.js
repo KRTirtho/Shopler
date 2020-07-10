@@ -45,6 +45,7 @@ if(NODE_ENV==="production"){
   app.use(express.static("client/build"))
   // important because if not set then React Router won't work
   app.get("/*", (req, res)=>{
+    console.log("MATCH")
     res.sendFile(__dirname+"/client/build/index.html")
   })
 }

@@ -72,7 +72,7 @@ function AppNavBar() {
               </NavLink>
             )}
 
-            <NavLink activeClassName="link" exact to="/api">
+            <NavLink activeClassName="link" exact to="/test-api">
               <NavItem title="Api" content="Api" />
             </NavLink>
             

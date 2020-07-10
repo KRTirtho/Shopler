@@ -68,7 +68,7 @@ const App = () => {
                   <Route path="/" exact>
                     <Body />
                   </Route>
-                  <Route exact path="/api">
+                  <Route exact path="/test-api">
                     <Api />
                   </Route>
                   <Route exact path="/products/:productId">
