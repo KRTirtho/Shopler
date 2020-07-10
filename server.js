@@ -40,17 +40,18 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use("/api", router);
+
 //For all routes in production
 if(NODE_ENV==="production"){
   app.use(express.static("client/build"))
   // important because if not set then React Router won't work
   app.get("/*", (req, res)=>{
-    console.log("MATCH")
     res.sendFile(__dirname+"/client/build/index.html")
+    console.log("MATCH")
   })
 }
 
-app.use("/api", router);
 
 app.listen(PORT, (err)=>{
   if(err)throw new Error("Failed starting the server on: "+PORT)
