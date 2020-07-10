@@ -29,16 +29,52 @@ function DashBoard({location}) {
         if(window.innerWidth<=650){
             setSidebarToggle(false)
         }
-        
-        const swipeToOpen = e=>{
-            if(e.touches[0].screenX>0 && e.touches[0].screenX <=480){
-                setSidebarToggle(true)
+
+        /* Swipe track Functions */
+        document.addEventListener('touchstart', handleTouchStart, false);        
+        document.addEventListener('touchmove', handleTouchMove, false);
+
+        var xDown = null;                                                        
+        var yDown = null;
+
+        function getTouches(evt) {
+        return evt.touches;
+        }                                                     
+
+        function handleTouchStart(evt) {
+            const firstTouch = getTouches(evt)[0];                                      
+            // Getting the touch start down & setting it toward the client
+            xDown = firstTouch.clientX;                                      
+            yDown = firstTouch.clientY;                                      
+        };                                                
+
+        function handleTouchMove(evt) {
+            if ( ! xDown || ! yDown ) {
+                return;
             }
-        }
-        
-        document.addEventListener("touchmove", swipeToOpen)
+
+            var xUp = evt.touches[0].clientX;                                    
+            var yUp = evt.touches[0].clientY;
+
+            var xDiff = xDown - xUp;
+            var yDiff = yDown - yUp;
+
+            if ( (Math.abs( xDiff ) > Math.abs( yDiff ) && (xDown > 0 && xDown <100)) ) {/*most significant*/
+                if ( xDiff > 0 ) {
+                    /* left swipe */ 
+                    setSidebarToggle(false)
+                } else {
+                    /* right swipe */
+                    setSidebarToggle(true)
+                }                       
+            }
+            /* reset values */
+            xDown = null;
+            yDown = null;                                             
+        };
         return ()=>{
-            document.removeEventListener("touchmove", swipeToOpen)
+            document.removeEventListener('touchstart', handleTouchStart, false);        
+            document.removeEventListener('touchmove', handleTouchMove, false);
         }
     }, [darkMode])
 
