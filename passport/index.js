@@ -2,6 +2,7 @@ const passport = require("passport")
 const LocalStrategy = require("./LocalStrategy")
 const User = require("../models/User")
 const GithubStrategy = require("./GithubStrategy")
+const FacebookStrategy = require("./FacebookStrategy")
 
 //Serializing user
 
@@ -21,5 +22,6 @@ passport.deserializeUser((id, done)=>{
 
 passport.use(LocalStrategy)
 passport.use("github", GithubStrategy)
+passport.use("facebook", FacebookStrategy)
 
 module.exports = passport

@@ -25,7 +25,12 @@ router.post("/user/signup", authHandlers.isAvailableUsername, authHandlers.signu
 //%Github OAuth Authentication
 
 router.get("/auth/github/", passport.authenticate('github')) 
-router.get("/auth/github/callback/", passport.authenticate("github", {failureRedirect: "/login", failureMessage: "Error getting signed with OAuth Github", successRedirect: "/"}))
+router.get("/auth/github/callback/", passport.authenticate("github", {failureRedirect: "/login", failureMessage: "Error getting signed in with OAuth Github", successRedirect: "/"}))
+
+//% Facebook OAuth Authentication 
+router.get("/auth/facebook/", passport.authenticate("facebook"))
+router.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect:"/login", failureMessage: "Error getting signed in with Facebook OAuth", successRedirect: "/"}))
+
 router.post("/user/login",
  passport.authenticate('local', {failureRedirect: "/", failureMessage: "Error username or password incorrect"}), authHandlers.getLoggedIn);
 

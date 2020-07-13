@@ -10,5 +10,8 @@ module.exports = {
     PORT: process.env.PORT,
     CLOUD_NAME: process.env.CLOUD_NAME,
     CLOUD_API_KEY: process.env.CLOUD_API_KEY,
-    CLOUD_API_SECRET: process.env.CLOUD_API_SECRET
+    CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
+    FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
+    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
+    FACEBOOK_CALLBACK_URL: process.env.FACEBOOK_CALLBACK_URL,
 }

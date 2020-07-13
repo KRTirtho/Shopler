@@ -15,6 +15,7 @@
         "midgray",
         "originalname",
         "postbuild",
+        "reauthenticate",
         "signup",
         "uploader",
         "upsert"

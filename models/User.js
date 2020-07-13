@@ -18,6 +18,7 @@ let userSchema = new mongoose.Schema({
 	imgId: {type: String, required: false},
 	type: { type: String },
 	githubId: { type: String },
+	facebookId: {type: String},
 	googleId: Number,
 	review: [{productId: mongoose.SchemaTypes.ObjectId, _id: false}],
 	comment: [{productId: mongoose.SchemaTypes.ObjectId, _id: false}],
