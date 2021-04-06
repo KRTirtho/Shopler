@@ -13,7 +13,7 @@ const {PORT, MONGO_URI, NODE_ENV, SESSION_SECRET} = require("./config")
 const dbConnection = mongoose.connection
 
 //! Only for Development
-const URI = NODE_ENV==="production"? MONGO_URI : "mongodb://127.0.0.1:27017/Todo";
+const URI = MONGO_URI;
 
 mongoose.connect(URI, {
   useNewUrlParser: true,
