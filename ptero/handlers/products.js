@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
 const Image = require("../models/Image");
-const fs = require("fs");
 const cloudinary = require("cloudinary").v2
 
 //*Product Handling---------------------------------------------------

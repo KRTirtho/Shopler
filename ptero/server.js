@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require("./passport")
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+const path = require("path");
 const {PORT, MONGO_URI, NODE_ENV, SESSION_SECRET} = require("./config")
 
 const dbConnection = mongoose.connection
@@ -44,10 +45,10 @@ app.use("/api", router);
 
 //For all routes in production
 if(NODE_ENV==="production"){
-  app.use(express.static("client/build"))
+  app.use(express.static("..tyranno/build"))
   // important because if not set then React Router won't work
   app.get("/*", (req, res)=>{
-    res.sendFile(__dirname+"/client/build/index.html")
+    res.sendFile(path.join(__dirname, "..", "tyranno", "build", "index.html"))
     console.log("MATCH")
   })
 }
