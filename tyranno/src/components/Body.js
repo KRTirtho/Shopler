@@ -7,7 +7,6 @@ import "../libs/Tiny.components.css";
 import uuid from "uuid";
 import {
   getProducts,
-  clearProductCache,
   setPaginating,
 } from "../Features/actions/productActions";
 import "./scss/Body.scss";

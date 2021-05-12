@@ -8,7 +8,6 @@ import {
   ERROR_CART,
   QUANTITY_UPDATED,
 } from "../actions/cartActions";
-import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const initialState = {
   products: [],

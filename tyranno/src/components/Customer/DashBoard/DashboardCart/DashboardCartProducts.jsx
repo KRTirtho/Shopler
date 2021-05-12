@@ -12,7 +12,7 @@ const DashboardCartProducts = (props)=>{
     const [quantity, setQuantity] = useState('')
     const [editing, setEditing] = useState(false)
     const dispatch = useDispatch();
-    const {_id, title, category, description, price, productQuantity, imgSrc} = props
+    const {_id, title, category, description, productQuantity, imgSrc} = props
 
     const quantityHandler = e=>{
         setEditing(true)
@@ -25,8 +25,6 @@ const DashboardCartProducts = (props)=>{
 
         /* Has to call to API */
     }
-
-    console.log("RENDER")
     
     /* Calling API to DELETE The full Product from CART */
     const removeProduct = ()=>{
